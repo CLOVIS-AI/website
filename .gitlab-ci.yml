@@ -54,8 +54,7 @@ pages:
       artifacts: true
 
   script:
-    - mkdir -p public
-    - mv docs-website public/docs
+    - mv docs-website public
 
   artifacts:
     paths:
