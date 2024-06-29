@@ -83,7 +83,16 @@ use_directory_urls: false
 nav:
   - Home: index.md
 
-  - Getting started: []
+  - Experience:
+      - experience.md
+
+      - Professional:
+          - 4SH:
+              - experience/4sh.md
+              - experience/simar.md
+              - experience/cin.md
+          - experience/cea.md
+          - experience/arcachon.md
 
   - Module1: []
 
