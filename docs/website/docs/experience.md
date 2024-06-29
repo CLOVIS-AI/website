@@ -16,7 +16,7 @@ I'm a software engineer based in Bordeaux, France. I'm a native French speaker, 
 
 **[2019 at Ochanomizu University](experience/ochadai.md) •** Software developer intern
 
-**[2017 to 2019 at IUT de Gradignan](experience/iut.md) •** Software developer student
+**[2017 to 2019 at IUT de Bordeaux](experience/iut.md) •** Software developer student
 
 ## Other organizations
 

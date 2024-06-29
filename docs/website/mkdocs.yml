@@ -95,5 +95,9 @@ nav:
           - experience/arcachon.md
 
   - Module1: []
+      - Education:
+          - experience/enseirb.md
+          - experience/ochadai.md
+          - experience/iut.md
 
   - Module2: []
