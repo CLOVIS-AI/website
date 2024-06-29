@@ -2,6 +2,21 @@
 template: home.html
 ---
 
-# Welcome!
+# Hi!
 
-The OpenSavvy Playground is a project template with pre-configured CI/CD, documentation generator, etc.
+I'm a software engineer specialized in [Kotlin](https://kotlinlang.org/).
+
+I'm currently employed at [4SH](https://www.4sh.fr/), in Bordeaux, France, where I work on automating communication between freight actors (container shipping companies, cargo airlines, truckers…) and French customs.
+Our systems track all the freight traffic in multiple French harbours and airports and help discover mismanagement issues before illegal payloads can enter or exit the country.
+
+I'm also active in the open source ecosystem, mostly as part of the [OpenSavvy](https://opensavvy.dev) organization, which I co-created.
+
+## Why CLOVIS?
+
+CLOVIS was my first large programming project, back in high-school. I was working on programmable chatbots inspired by [ELIZA](https://en.wikipedia.org/wiki/ELIZA), so I needed a similar name. I created my GitHub account at the time, and the name stuck, even if the project itself is long gone.
+
+After becoming a professional software engineer, I merged my online and offline identities; I know go interchangeably by Ivan or CLOVIS.
+
+## Get in touch
+
+[LinkedIn](https://www.linkedin.com/in/ivan-canet/) • [GitLab](http://gitlab.com/clovis-ai) • [GitHub](http://github.com/clovis-ai) • [Twitter](https://twitter.com/ivcanet) • [Telegram](https://t.me/clovis_ai)
