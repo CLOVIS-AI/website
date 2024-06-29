@@ -1,7 +1,7 @@
-site_name: OpenSavvy Playground
-site_author: OpenSavvy & contributors
+site_name: Ivan “CLOVIS” Canet
+site_author: Ivan “CLOVIS” Canet
 site_description: >
-  Project template with CI/CD and IDE configuration.
+  Software engineering, open source and computer security
 
 theme:
   name: material

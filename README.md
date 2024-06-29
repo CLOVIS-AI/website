@@ -1,15 +1,10 @@
-# Playground: Baseline
+# Ivan's website
 
-<!-- When using the Playground to bootstrap a project, replace this by your project description. -->
-This a template to easily bootstrap your projects.
-
-> This project is part of the OpenSavvy Playground.
-> To learn more, visit [this page](docs/playground/README.md).
+The sources are in the [docs/website](docs/website) directory.
 
 ## License
 
-<!-- Mentions under which license you are publishing the project. -->
-<!-- Add the full text to the LICENSE file. -->
+The contents of this project are not licensed to anyone under any terms. 
 
 ## Contributing
 
