@@ -26,4 +26,4 @@ I joined the [WildFyre](experience/wildfyre.md) project in 2018 and joined the B
 
 Since 2016, I am also part of the French translation team of the [Telegram app](experience/telegram.md), the most popular communication app in France. I am also a moderator of the official French and Japanese channels.
 
-In 2015, I was part of the French translation team for the now-defunct [Plag app](experience/plag.md).
+In 2015, I was part of the French translation team for the now-defunct [Plag app](experience/wildfyre.md#a-spiritual-chain).

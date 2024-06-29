@@ -94,10 +94,14 @@ nav:
           - experience/cea.md
           - experience/arcachon.md
 
-  - Module1: []
       - Education:
           - experience/enseirb.md
           - experience/ochadai.md
           - experience/iut.md
+
+      - Organizations:
+          - experience/opensavvy.md
+          - experience/wildfyre.md
+          - experience/telegram.md
 
   - Module2: []
