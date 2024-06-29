@@ -8,13 +8,46 @@
 		min-height: 75vh;
 		margin-left: auto;
 		margin-right: auto;
+
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		flex: 1;
+		gap: 30px;
+	}
+
+	#hero-page img {
+		max-width: 100vw;
+		max-height: 80vh;
 	}
 
 	#hero-title {
 		font-size: 3.7rem;
-		margin-top: 30vh;
+		margin-top: 10vh;
 		margin-bottom: 1rem;
 		font-weight: bolder;
+	}
+
+	@media (orientation: portrait) {
+		#hero-page {
+			flex-wrap: wrap;
+			display: block;
+			position: relative;
+		}
+
+		#hero-page img {
+			position: absolute;
+			z-index: -1;
+			top: -15vh;
+		}
+
+		#hero-title {
+			margin-top: 35vh;
+		}
+
+		h1 {
+			color: hsl(225 15% 90% / 0.95) !important;
+		}
 	}
 
 	@media screen and (min-width: 60em) {
@@ -31,6 +64,9 @@
 </style>
 
 <section id="hero-page" class="mdx-container">
+	<!-- Background image -->
+	<img src="assets/portrait.jpg" alt="Portrait of Ivan Canet">
+
 	<div class="md-typeset">
 		<div class="mdx-hero">
 			<div class="mdx-hero__content">
