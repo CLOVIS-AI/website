@@ -104,4 +104,6 @@ nav:
           - experience/wildfyre.md
           - experience/telegram.md
 
-  - Module2: []
+  - Public speaking:
+      - talks/4sh-workshops.md
+      - talks/tech-derailed.md
