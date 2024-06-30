@@ -89,6 +89,7 @@ nav:
       - Professional:
           - 4SH:
               - experience/4sh.md
+              - experience/ktmongo.md
               - experience/simar.md
               - experience/cin.md
           - experience/cea.md
