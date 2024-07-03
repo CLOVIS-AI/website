@@ -30,3 +30,5 @@ I also contributed some quality-of-life improvements to our open source dependen
 
 - Python
 - Rust
+- PyO₃
+- Pytest

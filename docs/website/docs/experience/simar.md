@@ -23,3 +23,4 @@ I joined the SIMAR project in 2024 as one of the five software engineers on the 
 - MongoDB
 - Kubernetes
 - Kafka
+- Gradle

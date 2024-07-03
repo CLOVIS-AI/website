@@ -44,6 +44,7 @@ The new website is live as of late 2023, and includes full Formulaide integratio
 - Kotlin frontend with React
 - Full business logic and validation layers shared between backend and frontend thanks to Kotlin Multiplatform
 - MongoDB
+- Gradle
 
 ## Technical stack (Formulaide 2.0)
 
@@ -54,3 +55,4 @@ Formulaide 2.0 is characterized by its strong preference on versioned immutable 
 - Full business logic and validation layers shared backend and frontend thanks to Kotlin Multiplatform
 - Full test suites shared between all app layers
 - MongoDB
+- Gradle

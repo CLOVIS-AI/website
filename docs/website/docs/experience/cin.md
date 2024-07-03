@@ -21,3 +21,4 @@ I worked on unifying the user experience of the many screens and modules.
 - TypeScript / Angular frontend
 - MongoDB
 - HubIT (pub-sub service developed at 4SH)
+- Gradle
