@@ -1,6 +1,6 @@
 # Resume
 
-I'm a software engineer based in Bordeaux, France. I'm a native French speaker, and fluent English speaker.
+I'm a software engineer based in Bordeaux, France. I'm a native French speaker and fluent English speaker.
 
 ## Professional experience
 
@@ -22,7 +22,7 @@ I'm a software engineer based in Bordeaux, France. I'm a native French speaker, 
 
 In 2022, I co-created [OpenSavvy](experience/opensavvy.md) to host my various open source projects, especially Kotlin Multiplatform libraries, which I still maintain.
 
-I joined the [WildFyre](experience/wildfyre.md) project in 2018 and joined the Board of Directors, until its sunsetting in 2023. 
+I joined the [WildFyre](experience/wildfyre.md) project in 2018 and later its Board of Directors, until its sunsetting in 2023. 
 
 Since 2016, I am also part of the French translation team of the [Telegram app](experience/telegram.md), the most popular communication app in France. I am also a moderator of the official French and Japanese channels.
 

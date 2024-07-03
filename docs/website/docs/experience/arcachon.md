@@ -18,9 +18,9 @@ No off-the-shelf tools perform these features while following the policies set b
 !!! note ""
     View the [repository](https://gitlab.com/arcachon-ville/formulaide).
 
-Formulaide would be an internal tool that would let the IT department declare the structure of their processes (data requested from users, who would be responsible from verifying and processing it, etc).
+The goal was to create an internal tool called Formulaide that would let the IT department declare the structure of their processes: data requested from users, who would be responsible from verifying and processing it, backup policies, etc.
 
-When the new website would be developed, it would interact with APIs from Formulaide to dynamically insert the required fields into its editor, to let the PR team construct forms as they wanted.
+The new website would be developed after Formulaide and would interact with Formulaide's APIs to dynamically insert the required fields into its editor, letting the PR team construct forms as they wanted.
 
 Formulaide would thus receive the user's submissions directly, and would store them, giving visibility rights to relevant staff, creating todo-lists to staff needing to verify or process the data, letting the IT department perform GDPR or backup operations.
 
@@ -34,9 +34,9 @@ As the only person on the project, it was my job to conduct meeting with the dif
 
 At the end of the internship, the town hall contracted me as a freelancer to perform corrective maintenance and implement additional features.
 
-Sadly, the initial context of the internship—during the summer months, when half the staff is on holidays, and the other is extremely busy—meant that very little user feedback could be collected during development. After a year in production, and much more in-depth user studies, as well as the development of the new website having started, a full rewrite was started, but had to be abandoned six months later due to funding issues.
+Sadly, the initial context of the internship—during the summer months, when half the staff is on holidays, and the other is extremely busy—meant that very little user feedback could be collected during initial development. After a year in production, much more in-depth user studies, and the start of the development of the new website, a full rewrite was started, but had to be abandoned six months later due to funding issues.
 
-The new website of the town is live as of late 2023, and includes full Formulaide integration, but no Formulaide-based forms are currently publicly available because the development of Formulaide 2.0 was not finished.
+The new website is live as of late 2023, and includes full Formulaide integration, but no Formulaide-based forms are currently publicly available because the development of Formulaide 2.0 was not finished.
 
 ## Technical stack (Formulaide 1.0)
 

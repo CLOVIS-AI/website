@@ -13,7 +13,7 @@
 
 4SH is a major player in the freight industry, developing the tracking systems for multiple airports and harbours, including the Charles de Gaulle airport (CDG) and the East harbour of La Réunion.
 
-Finally, 4SH develops many smaller projects, included project-management solutions, a serious game for accounting students, tools for journalists…
+Finally, 4SH develops many smaller projects, including project-management solutions, a serious game for accounting students, tools for journalists…
 
 ## Perpetual improvement
 

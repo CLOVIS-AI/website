@@ -3,7 +3,7 @@
 !!! note ""
     Visit the [official website](https://web.archive.org/web/20210621033836/https://wildfyre.net/) (using the Wayback Machine).
 
-WildFyre was a social network built on the idea that _content_, not _users_ should be the focus of the platform. By adopting an algorithm entirely based on mandatory voting, WildFyre could enjoy a community that was more engaged than most social networks, but also more conscious of their impact on each other.
+WildFyre was a social network built on the idea that _content_, not _users_, should be the focus of the platform. By adopting an algorithm entirely based on mandatory voting, WildFyre could enjoy a community that was more engaged than most social networks, but also more conscious of their impact on each other.
 
 The concept was simple: a user would see a single post at a time, and they would have to vote by "extinguishing" the post (which did nothing) or "spreading" it (which would show it to 4 additional users) before being able to view another one. It was not possible to go back to a previous post except by remembering its URL.
 
@@ -15,7 +15,7 @@ I joined the project in 2017, a year after its creation. My goal was to implemen
 
 In mid-2019, WildFyre became a non-profit organization, and I joined the Board of Directors. However, COVID would kill the free time of everyone involved, and all members moved on to other projects. In 2023, the project was officially sunset.
 
-This project was my first experience at community management, and I'm very grateful for everything I was able to learn as well as the ability to have real users to interact with for my first real project.
+This project was my first experience at community management, and I'm very grateful for everything I was able to learn as well as the ability to have real users to interact with for my first real programming project.
 
 ## A spiritual chain
 
