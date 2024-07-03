@@ -61,6 +61,9 @@ theme:
 
 plugins:
   - social
+  - blog:
+      post_excerpt: required
+      authors: false
 
 markdown_extensions:
   - admonition
@@ -108,3 +111,6 @@ nav:
   - Public speaking:
       - talks/4sh-workshops.md
       - talks/tech-derailed.md
+
+  - Blog:
+      - blog/index.md
