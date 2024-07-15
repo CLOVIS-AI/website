@@ -64,6 +64,8 @@ plugins:
   - blog:
       post_excerpt: required
       authors: false
+  - tags:
+      tags_file: blog/tags.md
 
 markdown_extensions:
   - admonition
@@ -114,3 +116,4 @@ nav:
 
   - Blog:
       - blog/index.md
+      - blog/tags.md
