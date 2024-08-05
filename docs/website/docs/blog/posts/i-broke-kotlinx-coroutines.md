@@ -179,7 +179,7 @@ In idiomatic Kotlin code, the `finally` block is actually extended to also execu
 
 ## Post-mortem
 
-The bug was [caught](https://github.com/Kotlin/kotlinx.coroutines/issues/3985) by [Amejonah1200](https://github.com/Amejonah1200) when they started using KotlinX.Coroutines 1.8.0-RC in their projects. Thanks to them, this never reached production. After that, the KotlinX.Coroutines team handled the rest: they rolled back my changes, introduced a bunch of tests to ensure no one would forget about non-local returns in the future, and published 1.8.0. Since Kotlin 1.9.30 had been released in the meantime, and contained the fix for the original compiler bug, there was no need for the workaround anymore.
+The bug was [caught](https://github.com/Kotlin/kotlinx.coroutines/issues/3985) by [Amejonah1200](https://github.com/Amejonah1200) when they started using KotlinX.Coroutines 1.8.0-RC in their projects. Thanks to them, this never reached production. After that, the KotlinX.Coroutines team handled the rest: they rolled back my changes, introduced a bunch of tests to ensure no one would forget about non-local returns in the future, and published 1.8.0. Since Kotlin 1.9.30 had been released in the meantime, and contained the fix for the original compiler bug thanks to [Artem Kobzar](https://x.com/rage_monk), there was no need for the workaround anymore.
 
 On my part… well, I learned one more trap to catch during code review. I haven't found any other bugs this inconvenient or weird since, and I'm glad that this is an extremely rare occurrence.
 
