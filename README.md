@@ -2,6 +2,8 @@
 
 The sources are in the [docs/website](docs/website) directory.
 
+The website is deployed to [ivan.canet.dev](https://ivan.canet.dev).
+
 ## License
 
 The contents of this project are not licensed to anyone under any terms. 
