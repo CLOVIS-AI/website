@@ -24,7 +24,7 @@ There are many differences that we could discuss: build tooling, ecosystem, inte
 
 ## A difference in philosophy
 
-At the root of it all, there is a different vision. TypeScript wants to be a general replacement of JavaScript: any JavaScript code should be portable to TypeScript with minimal changes and minimal downsides. Kotlin wants to be a single, unified language that supports multiple languages, one of which being the web.
+At the root of it all, there is a different vision. TypeScript wants to be a general replacement of JavaScript: any JavaScript code should be portable to TypeScript with minimal changes and minimal downsides. Kotlin wants to be a single, unified language that supports multiple platforms, one of which being the web.
 
 This difference in philosophy is the source of almost all differences. TypeScript must always retain JavaScript's runtime behavior, whereas Kotlin cares more about being coherent with other platforms. Let's look at a simple example: array concatenation.
 
