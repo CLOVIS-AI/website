@@ -124,7 +124,9 @@ This approach is already much better as it will not swallow control-flow throwab
 
 If the process is dying, it still suffers from the same problems as the logging approach. However, the logging approach is often used as a last line of defense (which, as explained, it cannot be), whereas the rethrowing approach is used when we expect something else to be the last line of defense (otherwise, why rethrow?). Since we assume the existence of another line of defense, it isn't a major issue that we attempt a best-effort log. However, we should remain aware that whichever logging operation we attempt is likely to itself fail due to the same condition that failed the process.
 
-Since we are not obscuring the failure, this solution is much less dangerous than the other showcased. However, since the failure is continuing to spread, it is arguably not a recovery solution. 
+In this example, I used a logging statement to demonstrate the pattern in a concise way. However, since we are assuming that another handler exists lower in the call stack, to which we are rethrowing the throwable, it is likely safe to assume that that layer will handle logging itself. By logging it at our level, we are potentially causing the failure to be logged twice, or logged uselessly when the other handler is able to handle it cleanly. This generates noise which can make later analysis more complex, which is why this pattern is flagged as a mistake by tools such as [SonarQube](https://next.sonarqube.com/sonarqube/coding_rules?open=java%3AS2139&rule_key=java%3AS2139). Instead, this pattern should be used to perform something more useful than logging, which another layer wouldn't be able to. For example, closing a transaction or [reverting the current operation](https://arrow-kt.io/learn/resilience/saga/). 
+
+Since we are not obscuring the failure, this solution is much less dangerous than the other showcased. However, since the failure is continuing to spread, it is arguably not a recovery solution.
 
 ### Swallowing
 
