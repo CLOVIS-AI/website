@@ -90,7 +90,7 @@ Logging usually consists of sending some information to an external data storage
 try {
 	someOperation()
 } catch (e: Throwable) {
-	log.error("Something when wrong: $e")
+	log.error("Something went wrong: $e")
 }
 ```
 
@@ -115,7 +115,7 @@ A somewhat safer approach than logging and ignoring is to log and rethrow.
 try {
 	someOperation()
 } catch (e: Throwable) {
-	log.error("Something when wrong: $e")
+	log.error("Something went wrong: $e")
 	throw e
 }
 ```
