@@ -154,8 +154,20 @@ Again, the only sane approach in the rare cases where this is actually meaningfu
 
 ## The key takeaways
 
+I'm not saying you shouldn't catch _throwable instances_. I'm saying you shouldn't catch `Throwable`. Sometimes, you may have a good reason to catch a specific `Throwable` subtype: for example, if you're writing a [caching library](https://opensavvy.gitlab.io/groundwork/pedestal/api-docs/cache/index.html), you may want to catch `OutOfMemoryError`, drain the caches, and retry the operation—maybe draining the caches is enough for the process to be able to continue living.
+
+The important part is that this cannot be implemented by catching `Throwable` itself as a global generic solution; it is implemented by catching `OutOfMemoryError` in the very specific place where it makes sense to do so. This avoids the pitfalls described above, since other `Throwable` subtypes, which we may not know what to do with, aren't impacted.
+
+Most `Throwable` subtypes have a very specific situation in which it makes sense to catch them. For example, `UnsatisfiedLinkageError` may be caught to fall back to a non-native implementation that may be slower, `StackOverflowError` may be caught to detect an operation that became too complex and report it to the user without crashing. But there doesn't exist a handler that can handle *all* `Throwable` instances, and thus `catch (e: Throwable)` shouldn't appear in user code.
+
+On the idea of retrying a failed operation: this is actually almost impossible to implement in a general case. Most operations performed by a program aren't atomic and cannot be neatly rolled back, so when a failure occurs it is frequent that the operation is halfway performed and in a corrupted state. Retrying it may make the situation worse. If you want to learn more about retryable code, you may want to read about [Arrow Resilience](https://arrow-kt.io/learn/resilience/intro/) (for Kotlin) or [Duct tape](https://github.com/rnorth/duct-tape) (for Java).
+
+On the idea of catching `Exception` itself: in principle, this should be safe, as exceptions are designed to represent issues we can recover from. Detecting that an `Exception` was thrown and doing something else instead, like using an alternative implementation, or simply displaying an error to the user without compromising the rest of the process, should not in theory be dangerous. However, the real world is more complex, and some libraries use exception subclasses for control-flow in ways that require they are always rethrown. Most notably in the Kotlin ecosystem, this is the case with `CoroutineCancellationException`. To learn more about it, see [The Silent Killer that's crashing your coroutines](https://betterprogramming.pub/the-silent-killer-thats-crashing-your-coroutines-9171d1e8f79b).
+
+Finally, here are the main takeaways as a neat bullet list:
+
 1. Don't assume that the process can continue after you `catch` something.
-2. Always catch the strictness possible type you can.
-3. Never catch `Throwable` or `Error`.
-4. If you must catch `Exception`, always rethrow it.
-5. Rely on external crash handlers for truly critical solutions. Android will automatically restart an app, Kubernetes and Docker Swarm can be configured to automatically restart a server.
+2. Always catch the strictest possible type you can.
+3. Never catch `Throwable` or `Error`, but you may catch specific subclasses.
+4. If you must catch `Exception`, always rethrow it. Or, catch a specific subclass that you know all subclasses of and their usages, in which case you may do whatever.
+5. Rely on external crash handlers for truly critical solutions. Android will automatically restart an app, Kubernetes and Docker Swarm can be configured to automatically restart a server. A similar tool probably exists for your ecosystem.
