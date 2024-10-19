@@ -1,5 +1,7 @@
 ---
-date: 2024-08-01
+date: 
+  created: 2024-08-01
+  updated: 2024-10-19
 slug: hexagonal-architecture
 tags:
   - Software architecture
@@ -154,11 +156,11 @@ class MongoNoteRepository(
 	private val collection = database.getCollection<NoteDto>("notes")
 	
 	override fun create(note: Note) {
-		database.insert(note.toDto())
+		collection.insert(note.toDto())
 	}
     
 	override fun get(name: String): Note? =
-		database.findOne {
+		collection.findOne {
 			NoteDto::name eq name
 		}?.toDomain()
 }
@@ -287,6 +289,19 @@ As far as hexagonal architecture is concerned, these two examples are equivalent
 
 Lastly, if you were considering using an implicit mapping library like [MapStruct](https://mapstruct.org/)—please don't. The whole point, here, is to recognize the value in the mapping functions. These are the most likely pieces of the module to break and change in the future, that's the entire reason they exist. Understanding what they do or don't map is critical and should thus be kept as independent of magic as possible.
 
+Essentially, the domain module is our ideal representation (the one that most closely resembles the business needs), whereas ports and adapters represent technically tainted representations that have their own concerns. If you are ever in a situation where you are not able to change something in the domain because it would break something in a port or an adapter, you are by definition not using hexagonal architecture—or at the very least, you do not have access to its main benefit. If we take a slice of a component and look at the data flow, we will see that it always follows this pattern:
+
+```mermaid
+sequenceDiagram
+    Port->>Domain: Mapping to domain representation
+    Domain->>Domain: Validation, processing
+    Domain->>Adapter: Sending to external system
+    Adapter->>Domain: Retrieving from external system
+    Domain->>Port: Mapping to external representation
+```
+
+In this section, I gave the example of the mapping layer in the context of an HTTP API (to avoid breaking the API when the domain changes), but the exact same concerns and mechanisms are used for all other ports and adapters, no matter the technology. For example, a mapping layer is needed between the domain and the database to ensure we can continue reading data that was written with a previous schema.
+
 ## Interactions between components
 
 In a microservice deployment, you most likely have many components that interact with each other via some kind of API. How do you represent this relationship?
@@ -309,8 +324,8 @@ graph LR
     b:app --> b:http-client
     b:app --> b:mongodb
     
-    b:domain --> a:domain
-    b:http-client --> a:http-server
+    b:domain ==> a:domain
+    b:http-client ==> a:http-server
 ```
 
 Again, a domain depending on anything from the external world is the quickest way to introduce coupling that will cause a rewrite in the future. The domain now "knows" about something in the external world, and if that thing changes, it must change as well.
@@ -335,7 +350,7 @@ graph LR
     b:app --> b:mongodb
     b:app --> b:from-a
     
-    b:from-a --> a:http-client
+    b:from-a ==> a:http-client
 ```
 
 In this version, `b:domain` must redefine all classes it wants from `a:domain`, but it only declares the fields it directly has a use for. It also defines an interface with all the different endpoints it wants to access, again with only the fields it is interested in. The adapter module is responsible from converting these 'pseudo-endpoints' into real requests that are executed to the component `a` via its `a:http-client` port.
@@ -350,7 +365,7 @@ This approach is very efficient in creating buffers that protect against changes
 
 But, it's also a lot of boilerplate. Each time a microservice wants to access data from another one, you must write a local representation of the requested data, an interface that describes how it will be accessed, an adapter module with its own DTOs, mapping and request logic. All of this is a lot of work for what would be a single function call in a monolith. **One of the downsides of hexagonal architecture is that sacrificing on even one of these steps basically cancels out all stability benefits it would have otherwise granted**—so, in practice, we see many codebases that implement hexagonal architecture halfway, have lots of boilerplate, and none of the benefits.
 
-And, finally, each of these mapping layers cuts down on the flexibility of the wrapped tool. Let's imagine you want to use OpenTelemetry in your microservices. You want to declare telemetry events from your domains, but you don't want to directly depend on the OpenTelemetry library, since it's a technical concern. So, you create the interface and adapter dance with the functionalities that are the most important to you. But, OpenTelemetry is actually _very_ flexible, and it's unlikely your wrapper will be able to expose all this functionality—again, this would the job for a library author, and you're most likely not one, or if you are, you don't have the budget to make this high-quality enough.
+And, finally, each of these mapping layers cuts down on the flexibility of the wrapped tool. Let's imagine you want to use OpenTelemetry in your microservices. You want to declare telemetry events from your domains, but you don't want to directly depend on the OpenTelemetry library, since it's a technical concern. So, you create the interface and adapter pattern with the functionalities that are the most important to you. But, OpenTelemetry is actually _very_ flexible, and it's unlikely your wrapper will be able to expose all this functionality—again, this would be the job of a library author, and you're most likely not one, or if you are, you don't have the budget to make this high-quality enough.
 
 Sadly, this is something application developers can't really do anything about. So, **here's my plea to library authors**: when you're developing something that is meant to be used as part of the domain, please always expose a different artifact that only contains your main objects as interfaces. This way, if a user wants to migrate away from your library in the future, or someone develops an alternative version, or even just if you want to make breaking changes—you can introduce a thin wrapper on top of another library that implements the same API artifact.
 
