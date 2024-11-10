@@ -23,4 +23,4 @@ After becoming a professional software engineer, I merged my online and offline 
 
 ## Get in touch
 
-[LinkedIn](https://www.linkedin.com/in/ivan-canet/) • [GitLab](http://gitlab.com/clovis-ai) • [GitHub](http://github.com/clovis-ai) • [Twitter](https://twitter.com/ivcanet) • [Telegram](https://t.me/clovis_ai)
+[LinkedIn](https://www.linkedin.com/in/ivan-canet/) • [Mastodon](https://techhub.social/@clovis) • [Bluesky](https://bsky.app/profile/ivcanet.bsky.social) • [GitLab](http://gitlab.com/clovis-ai) • [GitHub](http://github.com/clovis-ai) • [Twitter](https://twitter.com/ivcanet) • [Telegram](https://t.me/clovis_ai)
