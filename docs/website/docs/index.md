@@ -9,7 +9,9 @@ I'm a software engineer specialized in [Kotlin](https://kotlinlang.org/).
 I'm currently employed at [4SH](experience/4sh.md), in Bordeaux, France, where I work on automating communication between freight actors (container shipping companies, cargo airlines, truckers…) and French customs.
 Our systems track all the freight traffic in multiple French harbours and airports and help discover mismanagement issues before illegal payloads can enter or exit the country.
 
-I'm also active in the open source ecosystem, mostly as part of the [OpenSavvy](experience/opensavvy.md) organization, which I co-created.
+I'm active in the open source ecosystem, mostly as part of the [OpenSavvy](experience/opensavvy.md) organization, which I co-created.
+
+I'm active in the local community groups as the organizer of [BordeauxKt](talks/bordeauxkt.md), the local Kotlin User Group, since 2024.
 
 To learn more about my profession and personal experience, visit [my resume](experience.md).
 
