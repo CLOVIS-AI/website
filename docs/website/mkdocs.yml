@@ -66,6 +66,8 @@ plugins:
       authors: false
   - tags:
       tags_file: blog/tags.md
+  - search
+  - privacy
 
 markdown_extensions:
   - admonition
