@@ -1,5 +1,6 @@
 ---
-date: 2024-07-15
+date: 
+  created: 2024-07-15
 slug: di-without-frameworks
 tags:
   - Software architecture

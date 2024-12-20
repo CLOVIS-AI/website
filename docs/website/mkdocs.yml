@@ -60,7 +60,7 @@ theme:
         name: "Dark theme (click to switch to system)"
 
 plugins:
-  - social
+#  - social
   - blog:
       post_excerpt: required
       authors: false
@@ -68,6 +68,11 @@ plugins:
       tags_file: blog/tags.md
   - search
   - privacy
+  - rss:
+      match_path: 'blog/posts/.*'
+      date_from_meta:
+        as_creation: date.created
+        as_update: date.updated
 
 markdown_extensions:
   - admonition

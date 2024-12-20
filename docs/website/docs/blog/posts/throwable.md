@@ -1,5 +1,6 @@
 ---
-date: 2024-10-07
+date: 
+  created: 2024-10-07
 slug: flee-throwable
 tags:
   - JVM

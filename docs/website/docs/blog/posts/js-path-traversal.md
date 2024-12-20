@@ -1,5 +1,6 @@
 ---
-date: 2024-09-23
+date: 
+  created: 2024-09-23
 slug: js-path-traversal
 tags:
   - JS/TS

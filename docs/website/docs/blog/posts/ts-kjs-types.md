@@ -1,5 +1,6 @@
 ---
-date: 2024-09-05
+date: 
+  created: 2024-09-05
 slug: ts-kjs-types
 tags:
   - JS/TS

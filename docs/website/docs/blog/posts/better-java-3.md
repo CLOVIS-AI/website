@@ -1,5 +1,6 @@
 ---
-date: 2024-12-16
+date: 
+  created: 2024-12-16
 slug: better-java-3
 tags:
   - JVM

@@ -1,5 +1,6 @@
 ---
-date: 2024-08-21
+date: 
+  created: 2024-08-21
 slug: gitlab-vs-github
 tags:
   - Open source
