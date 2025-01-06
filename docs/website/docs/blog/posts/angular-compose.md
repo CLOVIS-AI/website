@@ -162,27 +162,267 @@ This section was optimistic in Angular's favor. In the real world, such a counte
 
 ### Templates × code
 
-[//]: # (*ngIf)
+In this section, we'll compare how UI elements are declared. Angular has its own templating language, while Compose simply uses Kotlin functions.
 
-[//]: # (*ngFor)
+#### Representing UI in code
+
+In the old days of imperative frameworks, UI was declared by creating elements and assigning them to each other. While this was conceptually simple, it was not possible to look at some code and immediately know what the UI would look like when running.
+```javascript
+function onButtonClick() {
+	const div = document.createElement('div');
+	div.appendChild(document.createTextNode("You clicked once!"));
+	const button2 = document.createElement('button');
+	button2.innerText = 'Click';
+	div.appendChild(button2);
+	view.removeChild(button);
+	view.appendChild(div);
+}
+
+button.addEventListener('click', onButtonClick);
+```
+Often, these technologies were accompanied by XML or HTML files describing the initial state of the application (jQuery, JavaFX, .NET…); but it wouldn't be possible to know at a glance the different states an application could reach.
+
+Templating and data-binding allowed developers to more easily understand the possible cases by applying logic directly within components. The UI code for the initial state and other states could finally be written in the same syntax.
+```html
+<button *ngIf="!clicked; else #clicked" (click)="clicked = true">
+	Click here!
+</button>
+
+<div #clicked>
+	You clicked once!
+	<button>Click</button>
+</div>
+```
+```javascript
+@Component({
+	selector: 'component',
+	templateUrl: './component.component.html',
+	styleUrls: ['./component.component.css']
+})
+export class Component {
+
+	public clicked = false;
+}
+```
+
+However, the downside was that all developers now needed to master _two_ languages: a programming language to build the logic, and a templating language which had to have its own conditionals, loops, event management, and possibly even functions. Since templating languages are meant to look as much as possible like the actual markup, nice syntax is often simply not available.
+
+As framework authors improve their templating language, there are only two possible paths:
+
+- Either the authors are very strict to keep logic out of templates (like Mustache), in which case more boilerplate is needed to work with them,
+- Or authors attempt to make templates as easy to use as possible (like Angular), making them look more and more like a bastardized version of their accompanying programming language.
+
+Instead of bringing yet another language along, Compose completely does away with templating. Kotlin is built with the aim of providing Domain Specific Language (DSL) capabilities: we can create what looks like a custom declarative language within Kotlin. Compared to a real new language, authors have less control over the syntax. However, the upside is massive: all tooling automatically supports all DSLs (debuggers, profilers, syntax highlighting, refactorings…), and we can use _any_ Kotlin feature or library within any DSL, making them way more powerful than virtually any other DSL.
+
+By taking advantage of this feature, Compose becomes much more lightweight (as there is no need for a specific parser, for IDE plugins, or tooling any general) while still being easier to learn (because everything comes from Kotlin itself, there is no other language). We only need to look at the reference to know which components exist, we already know the syntax.
+
+Using Compose, components take the form of functions. They are actually quite different from regular functions, but we use the same syntax for familiarity and convenience. To differentiate them, components are annotated with `@Composable`.
+```kotlin
+@Composable
+fun Component() {
+	var clicked by remember { mutableStateOf(false) }
+	
+	if (clicked) {
+		Button(onClick = { clicked = true }) {
+			Text("Click here!")
+		}
+	} else {
+		Div {
+			Text("You clicked once!")
+			Button(onClick = { }) {
+				Text("Click")
+			}
+		}
+	}
+}
+```
+
+In the rest of this section, we will dive deeper into the various consequences of this decision.
+
+#### Flow control
+
+Since we represent all states within our UI code (whether templating or Kotlin), we need a way to control which states are or aren't active. The most basic ways to do so are conditionals and loops.
+
+##### If
+
+Angular has `*ngIf`:
+```html
+<div *ngIf="someBoolean">
+</div>
+```
+which can also represent else conditions:
+```html
+<div *ngIf="someBoolean; else #otherComponent">
+</div>
+
+<div #otherComponent>
+</div>
+```
+`*ngIf` doesn't support `else if`.
+
+Recently, Angular added the alternative (and more performant) `@if`:
+```html
+@if (someBoolean) {
+	<div>
+	</div>
+}
+@else if (otherBoolean) {
+	<div>
+	</div>
+}
+@else {
+	<div>
+	</div>
+}
+```
+
+This syntax is already much more familiar to JavaScript developers, but it isn't exactly identical. For example, the brackets are mandatory, and only a subset of JavaScript is allowed within the parentheses.
+
+Compose just uses Kotlin's `if`;
+```kotlin
+if (someBoolean) {
+	Div {}
+} else if (someOtherBoolean) {
+	Div {}
+} else {
+	Div {}
+}
+```
+
+Here, there are no limitations. All features of Kotlin are usable.
+
+##### Switch
+
+Angular has `*ngSwitch` to make multiple equality comparisons at once:
+```html
+<div [ngSwitch]="expression">
+	<div *ngSwitchCase="value1">A</div>
+	<div *ngSwitchCase="value2">B</div>
+	<div *ngSwitchCase="value3">C</div>
+	<div *ngSwitchDefault>D</div>
+</div>
+```
+
+Angular also has a newer improved syntax `@switch`:
+```html
+@switch (expression) {
+	@case ("value1") {
+		<div>A</div>
+	}
+	@case ("value2") {
+		<div>B</div>
+	}
+	@case ("value3") {
+		<div>C</div>
+	}
+	@default {
+		<div>D</div>
+	}
+}
+```
+Although this newer syntax is more performant, it isn't particularly similar to JavaScript's `switch`, so they still need to learn it. And since switches are not as commonly used as the other flow control options (I certainly don't use them more than once a week in Angular), remembering the syntax at all can be tough.
+
+Again, Compose uses Kotlin's `when`:
+```kotlin
+when (expression) {
+	"value1" -> Div { Text("A") }
+	"value2" -> Div { Text("B") }
+	"value3" -> Div { Text("C") }
+	else -> Div { Text("D") }
+}
+```
+Not only are there no further limitations, but `when` is much more versatile, so we use it more often:
+```kotlin
+when (value) {
+	is Loading -> ProgressIndicator(value.progress)
+	is Failure -> FailureMessage(value.failure)
+	is Success if (value.isNewBestScore) -> Text("New best score!")
+	is Success -> Text("Current score: ${value.score}")
+}
+```
+
+##### Loops
+
+Another fondamental flow control keyword is the `for` loop, which appears almost everywhere a component is repeated multiple times.
+
+Angular supports this using `*ngFor`:
+```html
+<div *ngFor="let item of list">
+	{{ item.score }}
+</div>
+```
+
+Additional options can be used to access more information about the loop. For example, to get the current index:
+```html
+<div *ngFor="let item of list; index as i">
+	{{ i }}. {{ item.title }}
+</div>
+```
+
+These examples are not idiomatic, however. When such lists change, all elements that are different from the previous run must be re-rendered. If some elements swapped places but are otherwise identical, they must be rendered just like if they were completely new elements, and all their state will be lost. Instead, we should communicate to Angular how we want to track items, such that Angular can simply reorder the items without re-rendering them:
+```html
+<div *ngFor="let item of list; trackBy=trackingFunction">
+	{{ item.title }}
+</div>
+```
+
+Note that the function cannot be written inline, even if it is a simple field access, as is most often the case. Instead, it must be written in the accompanying TypeScript file. 
+
+Or, using the newer alternative syntax:
+```html
+@for (item of list; track item.id) {
+	{{ item.title }}
+}
+```
+Once again, the alternative is more similar to JavaScript but still different enough that it has to be learned separately.
+
+Compose uses Kotlin's `for` syntax:
+```kotlin
+for (item in list) key(item.id) {
+	Text(item.title)
+}
+```
+For the same reasons as Angular, Compose needs a way to track reorders, which is done through the `key` function. It isn't directly part of the `for` construct (since that comes from Kotlin itself) and is slightly easier to forget, but it has the benefit of not being coupled to `for`, so it can be used in other loops as well.
+
+Indeed, Kotlin has many kinds of loops. As is standard in C descendants, in addition to `for`, there is `while` and `do…while`. However, since Kotlin is capable of DSLs, we can create additional loops that aren't part of the language, but behave similarly. The best example is probably `repeat` from the standard library:
+```kotlin
+repeat(10) {
+	key(it) {
+		Text("Element #$it")
+	}
+}
+```
+
+Flow control is a great example of the difference in approach between Angular and Compose: since Compose doesn't have a templating syntax, it supports out-of-the-box much more variety than Angular can, including the ability for users to easily create custom flow control options, without having to teach users another way to do things. Users can simply write code with the tools they already know, and it works.
+
+#### Formatting and conversions
+
 [//]: # (formatting pipes (| translate, etc))
-[//]: # (new syntax for loops and conditions?)
+
+#### Building complex components
+
+Even if templating languages become near programming languages, they are still technically different languages and need their own library ecosystem or higher-level tooling
+
+[//]: # (Directive)
 [//]: # (Building DSLs on top of existing components)
 
 ### Inputs and outputs
 
 ### Content projection
 
+## Modeling
+
+[//]: # (Service)
+[//]: # (Component class vs ViewModel)
+
 ## State management
 
 The main challenge of writing UIs is the mutation of state: if the state was static, we wouldn't need a client-side framework at all and could just return a baked page from the backend directly. Thus, a client-side framework must be able to manage mutation of state and re-rendering following that change, quickly, with few resources.
 
-[//]: # (Service)
-
-[//]: # (Component class vs ViewModel)
-
+[//]: # (Mono vs suspend)
 [//]: # (Subject vs Flow; pipe vs function)
+[//]: # (Signal vs State)
 
 [//]: # (Change detection cycle)
 
-[//]: # (Angular has absolutely everything ready-to-go)
+[//]: # (Angular has absolutely everything ready-to-go / the ecosystem)
