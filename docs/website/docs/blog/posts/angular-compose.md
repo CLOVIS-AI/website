@@ -397,7 +397,42 @@ Flow control is a great example of the difference in approach between Angular an
 
 #### Formatting and conversions
 
-[//]: # (formatting pipes (| translate, etc))
+Having a templating language is great for looking at the HTML file and visually understanding the structure of the component–but only if the template isn't cluttered. Although the TypeScript file exists to convert domain data into viewable data, such code is particularly inconvenient to write for pure formatting issues. For example, if you had a user profile and wanted to display the last name in Title Case, or if you wanted to replace enum elements by their text representation, or if you wanted to print a decimal number with a certain precision, or if you wanted to internationalize some text… Creating a new view object with mappers just for these simple transformations would be quite a pain.
+
+Since these kinds of transformations are very common, Angular provides its own concept of functions: pipes. Pipes are TypeScript classes that implement a pure operation and are called directly within the template using a shorthand syntax:
+```html
+<h5>{{ userName | titleCase }}</h5>
+```
+
+This pipe could be implemented as follows:
+```typescript
+@Pipe({
+	name: 'titleCase',
+})
+export class TitleCasePipe implements PipeTransform {
+	transform(value: string): string {
+		// https://stackoverflow.com/a/196991
+		return value.replace(
+			/\w\S*/g, 
+			text => text.charAt(0).toUpperCase() + text.substring(1).toLowerCase()
+		)
+	}
+}
+```
+This syntax isn't particularly complex to understand and I do think it is a great addition to Angular. However, it is one more concept with one more syntax that developers have to learn. While the overall idea is easy to memorize, the details are less so (which annotation should it use? What are its parameters? Which interface should it implement?).
+
+In contrast, Compose again relies on Kotlin features. Since the UI is written using method calls, data transformations can simply be done using other functions.
+```kotlin
+H5 {
+	Text(userName.toTitleCase())
+}
+```
+```kotlin
+fun String.toTitleCase() =
+	split(" ").joinToString(" ") { word -> 
+		word.replaceFirstChar { it.titlecase() } 
+	}
+```
 
 #### Building complex components
 
