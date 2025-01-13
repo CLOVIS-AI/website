@@ -436,10 +436,89 @@ fun String.toTitleCase() =
 
 #### Building complex components
 
-Even if templating languages become near programming languages, they are still technically different languages and need their own library ecosystem or higher-level tooling
+Having access to all HTML elements as well as conditionals and loops is a great start, but these are relatively low-levels so building complex components may be verbose. Angular thus introduces a higher abstraction: directives.
 
-[//]: # (Directive)
-[//]: # (Building DSLs on top of existing components)
+Directives are TypeScript classes that are applied to a view and modify it in some way. [Attribute directives](https://angular.dev/guide/directives/attribute-directives) access the underlying DOM element and [structural directives](https://angular.dev/guide/directives/structural-directives) can decide the arity of a component (display it once, display it multiple times, or don't display it at all).
+
+For example, we may want to create a table:
+```html
+<table>
+	<tr>
+		<th>First name</th>
+		<th>Last name</th>
+	</tr>
+	@for (user of users; track user.id) {
+		<tr>
+			<td>{{ user.firstName }}</td>
+			<td>{{ user.lastName }}</td>
+		</tr>
+	}
+</table>
+```
+So far, we have only used a basic loop. But what if we wanted to allow users to sort the table by each column? We could add buttons to each header, implement our own sorting in the TypeScript file, etc, but that would be a lot of code that would clutter the template, and also would need to be duplicated each time we use a table, if we wanted consistency.
+
+Instead, attribute directives allow us to invoke reusable features. Using the library [Angular Material](https://material.angular.io/), we can support sorted headers by editing our code to:
+```html hl_lines="3 5 6"
+<!-- Inspired by https://material.angular.io/components/sort/examples -->
+<!-- Licensed under the MIT license -->
+<table matSort (matSortChange)="sortData($event)">
+	<tr>
+		<th mat-sort-header="firstName">First name</th>
+		<th mat-sort-header="lastName">Last name</th>
+	</tr>
+	@for (user of sortedUsers; track user.id) {
+		<tr>
+			<td>{{ user.firstName }}</td>
+			<td>{{ user.lastName }}</td>
+		</tr>
+	}
+</table>
+```
+and adding to the component:
+```typescript
+@Component({ /* … */ })
+export class MyComponent {
+	// …
+	
+	public sortData(sort: Sort): void {
+		const data = this.users.slice();
+		if (!sort.active || sort.direction === '') {
+			this.sortedUsers = data;
+			return;
+		}
+		
+		this.sortedUsers = data.sort((a, b) => {
+			const isAsc = sort.direction === 'asc';
+			switch (sort.active) {
+				case 'firstName':
+					return compare(a.firstName, b.firstName, isAsc);
+				case 'lastName':
+					return compare(a.lastName, b.lastName, isAsc);
+				default:
+					return 0;
+			}
+		});
+	}
+}
+```
+
+As we can see, the template part is not particularly more complex than the initial version. The component code is significantly more complex, with the `sortData` method that is entirely boilerplate, but there exist other libraries with require much less code. However, the intrinsic problems remain: since we are "patching" existing HTML code, we must mimic its structure. Since headers are described far from cell contents, we must use some kind of magic value to identify which header affects which value.
+
+Compose doesn't have a direct equivalent of directives. In fact, directives are a solution for a specific case in a larger problem space: creating higher abstractions to add features to existing components. Angular has a second solution for another specific case of that problem space: content projection. Compose expands content projection so it can fix both problems in a single feature, which we will discuss later in this article, in the [Content projection](#content-projection) section.
+
+A fictitious way to implement sorted table headers in Compose (though I may release this as a library someday) may look like this:
+```kotlin
+SortedTable(users, trackBy = { it.id }) {
+	column("First name", sortBy = { it.firstName }) {
+		Text(it.firstName)
+	}
+	column("Last name", sortBy = { it.lastName }) {
+		Text(it.lastName)
+	}
+}
+```
+
+For brevity's sake, I won't expand on structural directives. As we have already seen in the [Loops](#loops) section, we can use Kotlin to create custom loops, and in the same way we can create an equivalent to any other kind of structural directive.
 
 ### Inputs and outputs
 
