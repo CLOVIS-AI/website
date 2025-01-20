@@ -71,7 +71,7 @@ It is certainly true that Angular's approach brings structure and consistency, b
 
 (go ahead, click on the buttons!)
 
-#### Angular
+##### Angular
 
 First, we create the HTML template, in which we can use data- and event-binding:
 
@@ -127,7 +127,7 @@ export class CounterComponent {
 
 Finally, we register the component in a module.
 
-#### Compose
+##### Compose
 
 With Compose, a component is just a Kotlin function annotated with `@Composable`:
 
@@ -521,6 +521,89 @@ SortedTable(users, trackBy = { it.id }) {
 For brevity's sake, I won't expand on structural directives. As we have already seen in the [Loops](#loops) section, we can use Kotlin to create custom loops, and in the same way we can create an equivalent to any other kind of structural directive.
 
 ### Inputs and outputs
+
+Both Angular and Compose break the system into components which can be reused in multiple places. Components share data between each other through a paradigm called __unilateral data flow__.
+
+Unilateral data flow dictates that:
+
+- A parent component provides data to a child component,
+- A child component provides events to a parent component.
+
+That is, if some data is used in two components, it should be __hoisted__ to their common parent in the view. The data flow rule ensures separation of concerns between components, and makes leaf components easier to test, as they contain only the state they are directly responsible for.
+
+##### Angular
+
+To implement these concepts, Angular allows annotating the state of a component with the `@Input` and `@Output` annotations. An `@Input` is a value passed from a parent component, whereas `@Output` annotates an `EventEmitter`, a special object that wires events through components.
+
+```html title="subscribe.component.html"
+<button (click)="onClick()">
+	Subscribe to {{ author }}'s posts
+</button>
+```
+
+```css title="subscribe.component.css"
+button {
+	margin: 2em;
+	background: transparent;
+	border: darkred 1px solid;
+}
+```
+
+```ts title="subscribe.component.ts" hl_lines="8 9"
+@Component({
+	selector: 'subscribe',
+	templateUrl: './subscribe.component.html',
+	styleUrls: ['./subscribe.component.css']
+})
+export class SubscribeComponent {
+
+	@Input({ required: true }) author!: string;
+	@Ouput() click = new EventEmitter<void>();
+	
+	public onClick(): void {
+		this.click.emit();
+	}
+}
+```
+
+As we can see, even though Angular is written in TypeScript, and TypeScript has a concept of mandatory and optional fields, we must use a presence assertion (`author!`) and specify that the field is required in Angular annotations. I have hope that this situation will be improved upon in future Angular versions, as creating yet another way to represent the absence of a value in the JS ecosystem is superfluous.
+
+Other than that, declaring an `@Input` in Angular is close to optimal syntax-wise: Angular views inputs as part of the component state (thus a class variable) with the special behavior that a parent can set them (thus marked by an annotation).
+
+Outputs are slightly less optimal as they must be declared of the type `EventEmitter<T>`, instantiated with a constructor, and also annotated with `@Output`. Anywhere within the component, we can then trigger the event by calling its `.emit()` method, which the parent component will receive if they bound the output.
+
+##### Compose
+
+Compose takes a step back and asks: what are really inputs and outputs? 
+
+- Inputs are simple data values passed from the parent component to the child component, easy enough. 
+- Outputs are actions that are triggered in a specific situation. In programming, we usually represent actions by functions, so let's do the same here.
+
+Since components are functions, they can naturally accept inputs as regular parameters. Outputs are represented by parameters of a lambda type, that the parent can thus provide and the child can call. With this simple rule, we have eliminated the need for yet another concept.
+
+```kotlin hl_lines="3 4"
+@Composable
+fun SubscribeButton(
+	author: String,
+	onClick: () -> Unit,
+) {
+	Button({
+		onClick { onClick() }
+		
+		style {
+			margin(2.em)
+			backgroundColor(Color.Transparent)
+			border(Color.DarkRed, 1.px, BorderStyle.Solid)
+		}
+	}) {
+		Text("Subscribe to $author's posts")
+	}
+}
+```
+
+Since outputs are just functions, we already know how to declare them and how to call them, there is no need for a special type.
+
+An added benefit of using regular function types is that we can control their signature. Angular's `EventEmitter<T>` is equivalent to Compose's `(T) -> Unit`. Using Compose, we can create outputs with multiple parameters or with a return type (for example to confirm whether the action was successful) which is much more complex to do using Angular.
 
 ### Content projection
 
