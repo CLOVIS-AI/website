@@ -1,6 +1,6 @@
 ---
 date:
-  created: 2024-12-30
+  created: 2025-01-27
 slug: angular-compose
 tags:
   - JS/TS
@@ -606,6 +606,183 @@ Since outputs are just functions, we already know how to declare them and how to
 An added benefit of using regular function types is that we can control their signature. Angular's `EventEmitter<T>` is equivalent to Compose's `(T) -> Unit`. Using Compose, we can create outputs with multiple parameters or with a return type (for example to confirm whether the action was successful) which is much more complex to do using Angular.
 
 ### Content projection
+
+Content projection refers to the ability of a parent component to inject arbitrary UI into a child component. A typical use-case is layout components like `Column` that place multiple sections on the UI without rendering UI themselves.
+Content projection is a powerful pattern allowing immense reuse of components.
+
+In the Compose world, content projection is also referred to as "slotting": we imagine a component which contains "slots" that a parent component may fill in.
+
+Content projection is Angular's second way of building more complex components from existing ones, the first being [structural directives](#building-complex-components) which we have mentioned already. Compose doesn't have structural directives and bases all abstractions on content projection; Compose users thus use content projection frequently, whereas it is a rarer feature in Angular applications.
+
+##### Angular
+
+In Angular, content projection is represented by the special `<ng-content>` tag in a child component:
+
+```html title="child.component.html"
+<article>
+	<h1>{{title}}</h1>
+	<div class="body">
+		<ng-content></ng-content>
+	</div>
+	<div class="footer">
+		<ng-content select="article-footer"></ng-content>
+	</div>
+</article>
+```
+
+```css title="child.component.css"
+.footer {
+	font-size: small;
+}
+```
+
+```ts title="child.component.ts"
+@Component({
+	selector: 'child',
+	templateUrl: './child.component.html',
+})
+export class ChildComponent {
+	
+	@Input() readonly title: string;
+	
+}
+```
+
+When a child contains the `<ng-content>` special tag, the parent may put code when invoking the child, which will be placed instead of the child's `<ng-content>` tag.
+
+```html title="parent.component.html"
+<child title="I know everything">
+	<p>Hello world,</p>
+	<p>Lorem ipsum dolor sit amet</p>
+	<article-footer>Author: John Smith</article-footer>
+</child>
+```
+
+```ts title="parent.component.ts"
+@Component({
+	selector: 'parent',
+	templateUrl: './parent.component.html',
+})
+export class ParentComponent {
+}
+```
+
+In this example, the `<child>` call contains two `<p>` and one `<article-footer>`. Since `<article-footer>` is mentioned in the child's second `<ng-content>`, it replaces that one, and both `<p>` replace the other one. The end result in the DOM is something like:
+```html hl_lines="4 5 8"
+<article>
+	<h1>I know everything</h1>
+	<div class="body">
+		<p>Hello world,</p>
+		<p>Lorem ipsum dolor sit amet</p>
+	</div>
+	<div class="footer">
+		<article-footer>Author: John Smith</article-footer>
+	</div>
+</article>
+```
+
+Content projection is very powerful, but unfortunately clashes with a few other features of Angular, which makes it far less useful than it would be otherwise be. For example, a component using content projection cannot be used within a template-driven form, as the link between the parent component and inputs projected within `<ng-content>` is severed, so any such inputs are not considered part of the form.
+
+As often with Angular, the syntax is a bit verbose and confusing for newcomers: it's the only part of the parent-child relationship that is specified within the template file and not within TypeScript, for example. Still, I personally think content projection is a great tool, and would benefit from being more transparent to other Angular features so they would work better together.
+
+##### Compose
+
+Unsurprisingly, Compose again takes a step back a rethinks what content projection is and how it should be implemented. After all, our goal is simply to inject UI code within another component. When using Compose, "UI code" is just a method annotated with `#!kotlin @Composable`, and our components are functions, so we can create higher-order components in the same way we create higher-order functions:
+
+```kotlin title="Child.kt"
+@Composable
+fun Child(
+	title: String,
+	body: @Composable () -> Unit,
+	footer: @Composable () -> Unit,
+) = Article {
+	H1 { Text(title) }
+		
+	Div({
+		classes("body")
+	}) {
+		body()
+	}
+		
+	Div({
+		classes("footer")
+		style {
+			fontSize(FontSize.Small)
+		}
+	}) {
+		footer()
+	}
+}
+```
+
+```kotlin title="Parent.kt"
+@Composable
+fun Parent() {
+	Child(
+		title = "I know everything",
+		body = {
+			P { Text("Hello world,") }
+			P { Text("Lorem ipsum dolor sit amet") }
+		},
+		footer = {
+			Text("Author: John Smith")
+		},
+	)
+}
+```
+
+You may think this syntax is very similar to how Compose declares events, and you'd be right, but the presence of the `#!kotlin @Composable` annotation makes them unambiguous.
+
+Since this relies on Kotlin language features, it composes much better with other concepts which also do so. In particular, inline functions are useful to declare layouts than are used transparently within different contexts, like forms. Additionally, Kotlin can mark parameters as mandatory or optional (content projection is always optional in Angular), or even accept varargs—though I haven't seen a use-case for vararg content projection yet.
+
+##### Examples
+
+Coupled with Kotlin's DSL capabilities, content projection allows extremely concise declarations that are hard—if not impossible—to replicate in Angular.
+
+This first one is a DSL for declaring an infinitely-scrolling feed that loads and unloads elements based on the viewport:
+```kotlin
+LazyColumn {
+	item {
+		Text("This is always the first element of the list")
+	}
+	
+	items(200, key = { it }) {
+		Text("Element $it")
+	}
+	
+	items({ loadPageFromServer(it) }) {
+		Text("Loaded the element $it")
+	}
+}
+```
+
+!!! tip "Angular equivalent?"
+    If I wanted to create an Angular API similar to this, I would probably use structural directives and not content projection. I don't believe Angular provides many tools to conditionally project children, or to project them multiple times, so content projection probably wouldn't work well here.
+
+The second one is a concise DSL for declaring tables:
+```kotlin
+Table(yourData, key = { it.id }) {
+	Column("Date") {
+		sortedBy { it.timestamp }
+		render {
+			Text(it.timestamp.toString())
+		}
+	}
+	
+	Column("Event") {
+		render {
+			Text(it.description)
+		}
+	}
+	
+	Column("Author") {
+		sortedBy { it.authorName }
+		render {
+			Text(it.authorName)
+		}
+	}
+}
+```
 
 ## Modeling
 
