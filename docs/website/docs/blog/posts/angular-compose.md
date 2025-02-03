@@ -1,13 +1,13 @@
 ---
 date:
-  created: 2025-01-27
+  created: 2025-02-03
 slug: angular-compose
 tags:
   - JS/TS
   - Kotlin
 ---
 
-# Comparing Angular and Compose
+# Deep dive into Angular and Compose differences
 
 Angular and Compose are both declarative UI frameworks and can both target the web ecosystem. Still, their approach is very different. Let's take a look at the similarities and the differences.
 
@@ -791,11 +791,343 @@ Table(yourData, key = { it.id }) {
 
 ## State management
 
-The main challenge of writing UIs is the mutation of state: if the state was static, we wouldn't need a client-side framework at all and could just return a baked page from the backend directly. Thus, a client-side framework must be able to manage mutation of state and re-rendering following that change, quickly, with few resources.
+The main challenge of writing UI is the mutation of state. Immutable data is much easier to work with in almost all regards, but if the state was immutable, we wouldn't need a client-side framework and could just return a baked page from the backend directly. Thus, a client-side framework must be able to manage mutation of state and re-rendering following that change, quickly, with few resources.
+
+### Change detection
+
+The first difficulty with dealing with change is knowing when it happened. Programming languages don't usually provide first-party ways to be notified when values change, or when they do it is intended for debuggers where performance is less a concern. Somehow, the framework must know when to re-render parts of the UI. Rendering as little as possible of the UI is crucial for performance, especially on low-end devices. Minimizing rendering is also important for accessibility.
+
+More specifically, we are not interested in _all_ state changes of the application. We are only interested in changes that:
+
+- apply to state displayed in the UI, or
+- by changing value, impacts other state which itself validates one of these two points.
+
+Over the years, many strategies for change detection have existed in many frameworks. Today, Angular has two main change detection detectors, the second being closer to Compose's method.
+
+##### Angular: The bruteforce way
+
+Traditionally, Angular state is stored as class fields in components. The obvious benefit of this approach is that everyone knows how to use class fields, and thus everyone knows how to manage Angular state. The downside is JavaScript doesn't provide a way to know when an arbitrary expression has changed. [`Proxy`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) exists but isn't used to my knowledge, probably because it is impractical in user-defined fields.
+
+Angular adopts a bruteforce approach to change detection, powered by [Zone.js](https://www.npmjs.com/package/zone.js). Angular subscribes to a large amount of browser events: button clicks, inputs, timeouts, fetch requests finishing, etc, and uses heuristics to guess which component they could emanate from. Then, Angular recomptes all expressions bound in templates, sees if they changed, and if so starts re-rendering.
+
+While this approach is conceptually simple for the developer, it is quite complex internally and also quite expensive to run. Angular frequently over-renders or over-computes. It is therefore crucial to make expressions bound in the view as simple as possible, ideally just reading variables.
+
+Lastly, the most fine-grained change detection done through this method is based at the level of the component. Large components which rarely change except in very subtle ways must be recomputed entirely. For these reasons, the Angular team has been working on other change detection algorithms.
+
+##### Angular: The async pipe
+
+The `async` pipe allows binding an observable value into the view, in a way Angular can understand. An observable value is a special type that allows readers to be notified when the value changes. We will discuss these later in this article.
+
+```html title="counter.component.html"
+<div>{{ count$ | async }} elements</div>
+```
+
+```typescript title="counter.component.ts"
+
+@Component({
+	selector: 'counter',
+	templateUrl: './counter.component.html',
+})
+export class CounterComponent implements OnInit {
+
+	public count$!: Observable<number>;
+
+	constructor(
+		private counterService: CounterService,
+	) {
+	}
+	
+	ngOnInit(): void {
+		this.count$ = this.counterService.countAsync();
+	}
+}
+```
+
+Since Angular subscribes to the `count$` observable itself, it knows when it changes. It can then run change detection and re-rending specifically for that value. Additionally, Angular can automatically unsubscribe from the observable when the component is destroyed.
+
+The direct conversion of this component in bruteforce style would look something like:
+
+```html title="counter.component.html"
+<div>{{ count ?? '' }} elements</div>
+```
+
+```typescript title="counter.component.ts"
+
+@Component({
+	selector: 'counter',
+	templateUrl: './counter.component.html',
+})
+export class CounterComponent implements OnInit, OnDestroy {
+
+	public count: number = undefined;
+	private subscription: Subscription | undefined = undefined;
+
+	constructor(
+		private counterService: CounterService,
+	) {
+	}
+	
+	ngOnInit(): void {
+		this.subscription = this.counterService.countAsync()
+			.subscribe(count => this.count = count);
+	}
+	
+	ngOnDestroy(): void {
+		this.subscription?.unsubscribe();
+	}
+}
+```
+
+This variant is already quite a bit longer, and although it seems to behave identically, it is actually quite a bit more expensive at runtime. Because Angular cannot know exactly when and which state changes, it has to guess, which may result in performance loss as Angular is forced to do useless work.
+
+##### Angular: Signals
+
+Recently, Angular has introduced the concept of signals. Signals will be described later in this article. For now, we can describe them as value wrappers: we can replace the wrapped value, which will notify Angular.
+
+Components must opt in with [`signals: true`](https://github.com/angular/angular/discussions/49682), which entirely disables the bruteforce change detection algorithm for that component. Once this is done, component state must be represented using signals instead of class fields: changing a class field will not trigger a re-rendering anymore.
+
+A downside of signals is that they cannot represent internally-mutable data. A signal may itself mutate, but any nested objects may not, as their mutations won't be tracked. Developers must thus work with deeply-immutable data structures of which only the roots are stored in signals.
+
+Even though this is a big departure from previous Angular mechanisms, it is internally much simpler and efficient, because Angular can understand the application in much greater detail, making it possible to optimize the framework much further. Enforcing deeply-immutable data also removes a large category of hard-to-track bugs in developer code.
+
+Note that you may use signals in Angular components without `signals: true`, for example to profit from the greatly simplified lifecycle management, but you will access any of the performance benefits then.
+
+##### Compose
+
+On the web, it is usually frowned upon to re-render every frame. Instead, developers should rely on CSS animations or the canvas to render per-frame content, as the DOM is simply not made for these situations. UI frameworks therefore only need to be faster than the DOM, so some loss of performance is acceptable.
+
+Compose was initially created by the Android team as a complete replacement for the Android rendering pipeline. Compose isn't meant to be a framework declaring the structure to another renderer, it is meant to be the renderer itself. In the Android world, animations are made with regular Compose components that re-render every frame. Nowadays, this means some components may need to render as many as 120 times per second.
+
+The bruteforce approach followed by default by Angular is therefore not an option. Instead, Compose follows what is essentially the same approach as Angular's `signals: true` components, where values are wrapped in a special mutator type that the framework understands deeply.
+
+While this approach is more taxing on developers, as they need to learn how to manage state, it is so much more performant that it is the dominant approach followed by other frameworks, such as React.
+
+<br>
+
+Now that we understand the overall approach to change detection, we can discuss the ways both frameworks handle state management. In my eyes, there are two main reasons why state changes: when a local event happens (the user interacts with the app) and when a remote event happens (we fetch some data, another user edits data). The former is immediate (we can always access the value at the current time), and the latter is delayed.
+
+Angular and Compose don't necessarily differentiate these two cases exactly in this way, but they both feature idiomatic ways to represent both of these situations.
+
+### Immediate state
+
+Immediate state is represented by framework-defined wrappers types that contain user-defined immutable data. Angular calls these wrapper types "signals" whereas Compose calls them "state".
+
+#### Imperative state management
+
+##### Wrapping and updating a value
+
+Since these types wrap an existing value, frameworks must provide an easy way to read and write them:
+
+```ts title="Angular"
+const count = signal(0);
+
+console.log('Reading the value', count());
+
+count.set(5)
+```
+
+```kotlin title="Compose"
+var count by mutableStateOf(0)
+
+println("Reading the value $count")
+
+count = 5
+```
+
+Both frameworks profit from their host language's type inference, so the wrapped type doesn't need to be explicitly written.
+Compose's state declaration functions are more verbose (which we will see is a trend with Compose state management), but use-site uses plain old Kotlin syntax for variable management, thanks to Kotlin's `by` keyword which transparently delegates the getter and setter—whereas, Angular developers must remember to use `()` to read the value, and call `set()` when writing it. This is currently causing a minor pushback in the Angular world, as developers have been taught for years to never call functions within a template, but signal accessors are specifically designed to be used as such.
+
+In both frameworks, wrapped types can be used within components, but also anywhere else. This is a major distinction compared to React, where state can only be managed within UI code, which creates the need for large meta frameworks for handling global state, like Redux.
+
+##### State lifetime
+
+Conceptually, there are two kinds of state lifetimes possible in a component: either state exists for the entire existence of that component, or state exists only during a single rendering pass. There, Angular and Compose have a different default. 
+
+Since Angular components are class-based, it is intuitive that class fields would have the lifetime of the class, thus signals declared in a class exist for the lifetime of the component described by that class, and signals declared within functions are local to these functions. Angular doesn't have a single function which contains an entire rendering pass, instead splitting it into `ngOnChanges`, `ngAfterContentChecked` and many others.
+
+Since Compose components are function-based, and a function call corresponds to a rendering pass, local variables intuitively only exist for a single rendering pass. To declare that a variable is kept between rendering passes, we use the `remember {}` helper. We can remember any kind of value, not just state. Because state is much more useful when it is stored for the entire lifetime of the component, it is very frequent to see state being remembered:
+```kotlin
+@Composable
+fun Foo() {
+	var count by remember { mutableStateOf(0) }
+    
+	// …
+}
+```
+We can think of `remember {}` as a way to bind a value to the component lifetime. It thus can only be used within components.
+
+One common pattern this allows us to do is to declare a class that contains internal state that can apparently mutate, and manage it as a single value. I personally find this pattern particularly useful when creating forms:
+```kotlin
+// Domain representation, immutable
+data class User(
+	val name: String,
+	val age: Int,
+)
+
+// View representation, appears to be mutable
+class MutableUser(user: User) {
+	var name by mutableStateOf(user.name)
+	var age by mutableStateOf(user.age)
+    
+	fun toDomain() = User(name, age) 
+}
+
+// UI code
+@Composable
+fun UserForm(user: User, save: (User) -> Unit) {
+	val view = remember { MutableUser(user) }
+    
+	TextField("Name", view.name, onInput = { user.name = it })
+	NumberField("Age", view.age, onInput = { user.age = it })
+    
+	SubmitButton(onClick = { save(view.toDomain()) })
+}
+```
+Here, we declare the state in a class, an instance of which is remembered. The same pattern could be implemented in Angular, but rarely is. I suspect the added syntax when dealing with signals may be the cause of the impopularity of this pattern. It's interesting to note that such a grouping cannot be implemented with React.
+
+##### More complex change detection
+
+Our goal is to change state as little as possible, as each state change may cause a new rendering pass. However, state often changes in ways which are not relevant to the user. For example, if we query a backend service for a list of entities, and we decide to refresh the page after an operation (just in case data has changed), and the exact same data is returned by the server, we will actually get a new list instance which contains brand-new objects, which just happen to be exactly the same as the ones we already have. In this situation, we don't want to render the screen again, since user-relevant data has not changed.
+
+JavaScript has many ways to represent equality of objects. By default, Angular uses [`Object.is()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is), which considers two arrays to always be different, no matter their content. The algorithm used can be overridden when declaring a signal:
+```typescript
+const entityList = signal([] as Entity[], { equal: customEqualityFunction })
+```
+
+Similarly, Compose allows overriding the comparison strategy:
+```kotlin
+val entityList by mutableStateOf(emptyList<Entity>(), customEqualPolicy())
+```
+In practice, this is rarely used, because the default behavior of Compose is to use Kotlin's `==` operator, which is already defined as structural equality for `data class` and collections, so we get the behavior we expect when querying remote data. Since each type can customize this behavior by overriding `equals`, the default behavior is often exactly what we want for all types.
+
+#### Declarative state management
+
+So far, we have managed state imperatively, by calling `.set()` or equivalent ourselves. However, the real strengths of wrapped state is the possibility to declare the relationship between multiple states and have the framework deal with updating them.
+
+##### Creating dependent values
+
+To start with, we can declare a state that is computed by combining the value of multiple other states. When any of these states change, the final state is updated. Just like with imperative states, if the result is identical to a previous value, nothing happens.
+
+```typescript title="Angular"
+const value = signal(0);
+const isEven = computed(() => { value() % 2 === 0 });
+```
+
+```kotlin title="Compose"
+var value by mutableStateOf(0)
+val isEven by derivedStateOf { value % 2 === 0 }
+```
+
+Both frameworks automatically keep track of which states are read, and automatically subscribe and unsubscribe to them.
+
+The main benefit of this approach is that it "buffers" changes. For example, if the view is very different for even and odd numbers, and the number changes in non-incremental ways (such that it often remains even or odd), reading the value directly within the view would trigger a rendering each time the value changes. However, reading the `isEven` computed state will ensure the view only attempts to render if the evenness actually changed.
+
+The main downside is that this management of dependencies can be a bit more expensive, so it is usually discouraged if the resulting state changes with the same frequency as the initial states. Another downside is that it stores an intermediary value, which is fine most of the time, but may cause memory contention if too many are used or when they store large objects.
+
+For values which change very frequently, Compose has another trick up its sleeve: since each component is a function that corresponds to a single rendering pass, we can declare local variables that read states:
+```kotlin
+@Composable
+fun Foo() {
+	var userName by remember { mutableStateOf("") }
+	val email = "${userName}@company.com"
+    
+	// …
+}
+```
+Assuming the `userName` is the primary source of recomposition in this component, storing another state for the `email` is pointless, as it will change each time anyway. The equivalent Angular pattern is creating a TypeScript getter which reads signals, and calling it in the view.
+
+##### Creating dependent effects
+
+In programming, we often say there are two different root concepts: data/variables and effects/functions. Just like we can declare some data that depends on states, we can declare effects that should be run each time some state changes.
+
+Note however that this is considered fairly low-level and shouldn't be used frequently within end-user code. Valid use-cases include notifying a non-framework-aware entity that state has changed, registering and unregistering event listeners, logging data, etc. Such uses should be encapsulated within utility functions and isolated from business code.
+
+In this example, we will ensure some state is synced with local storage, so it isn't lost even if the user closes the page: 
+```typescript title="Angular"
+const value = signal(window.localStorage.getItem("value") ?? 0);
+effect(() => { window.localStorage.setItem("value", value()) });
+```
+
+```kotlin title="Compose"
+@Composable
+fun ValueEditor() {
+	var value by remember { mutableStateOf(window.localStorage["value"] ?: 0) }
+	
+	SideEffect(value) {
+		window.localStorage["value"] = value
+	}
+}
+```
+
+Unlike previous state management solutions, which were very similar between Angular and Compose, this one is quite different. First, Compose requires that effects be tied to a specific component, whereas Angular allows them to be used anywhere. Second, Compose's effects do not automatically keep track of dependencies, so we have to specify which values we depend on when declaring the effect.
+
+Lastly, Compose has different kinds of effects. Both TypeScript and Kotlin make a distinction between regular functions and asynchronous/concurrent functions (TypeScript: `await`, Kotlin: `suspend`) which cannot be called within regular functions. Angular's `effect` cannot be used with an asynchronous operation, which is the exact equivalent to Compose's `SideEffect`. In both cases, if the operation is too slow, rendering will slow down. However, Compose also has `LaunchedEffect` and `DisposableEffect`.
+
+`LaunchedEffect` is written similarly, but its action is marked `suspend`. The action is started in exactly the same situations as a regular `SideEffect`, but rendering continues without waiting for the action to finish. The action can thus run for multiple rendering cycles. However, if the dependencies change, the currently-running action is cancelled and a new one is started. If the component is removed from the page, the action is cancelled as well. Using this, we can create extremely simple debouncing:
+```kotlin
+@Composable
+fun Foo() {
+	var value by remember { mutableStateOf(window.localStorage["value"] ?: 0) }
+
+	LaunchedEffect(value) {
+		delay(300) //(1)!
+		window.localStorage["value"] = value
+	}
+}
+```
+
+1. Delay writing to `LocalStorage` until a few milliseconds later. If the user is typing, this ensures we don't create lag by storing each intermediary values pointlessly.
+
+Lastly, `DisposableEffect` is identical to `LaunchedEffect` but allows declaring a clean-up operation to do when the effect is restarted or when the component is removed.
+```kotlin
+@Composable
+fun Foo() {
+	DisposableEffect(Unit) {
+		println("The component is being added to the view")
+        
+		onDispose {
+			println("The component is being removed from the view")
+		}
+	}
+}
+```
+Angular has a similar feature, but it cannot use asynchronous code:
+```typescript
+effect((onCleanup) => {
+	console.log('The component is being added to the view');
+	
+	onCleanup(() => {
+		console.log('The component is being removed from the view');
+	});
+});
+```
+
+##### More complex data structures
+
+Angular's recent signal implementation has the advantage of being very easy to use and learn, because its API surface is very small: `signal()`, `computed()` and `effect()` replace almost the entirety of the previous system, which was based on dozens of lifecycle hooks with complex ordering. 
+
+So far, while Compose provides more options, they can be emulated on top of Angular's primitives relatively easily. For example, `LaunchedEffect` can be implemented using a regular Angular effect by starting a `Promise` in the body and using an `AbortController` in the cleanup function—which is more or less how `LaunchedEffect` is implemented in Compose anyway. This is limited by JavaScript not having structured concurrency, but Angular's state system is still quite streamlined and terse. I find this quite welcome, as Angular didn't previously strike me as a concise technology code-wise, as we have seen in the UI declaration sections.
+
+There is still a feature I miss from Compose state management, however. Angular signals always wrap an entire value, and cannot understand changes to only a part of the wrapped value. For example, if we want to add an element to a wrapped list, Angular forces us to overwrite the entire list to update the signal:
+```typescript title="Angular"
+const users = signal([new User("foo"), new User("bar")]);
+
+users.update(previous => [...previous, new User("baz")]);
+```
+Compose instead has dedicated state types for collections:
+```kotlin
+val users = mutableStateListOf(User("foo"), User("bar"))
+
+users.add(User("baz"))
+```
+Here, Compose gives us a `MutableList<User>` that we can use exactly as any other Kotlin list, but that notifies the framework when any mutation is executed. Compose provides the same feature for maps, and we can create our custom types with interior mutability detection, though this is considered an advanced topic.
+
+### Delayed state
+
+#### Singular
 
 [//]: # (Mono vs suspend)
 [//]: # (Subject vs Flow; pipe vs function)
-[//]: # (Signal vs State)
 
 [//]: # (Change detection cycle)
 
