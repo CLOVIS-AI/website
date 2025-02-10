@@ -1,6 +1,6 @@
 ---
 date:
-  created: 2025-02-03
+  created: 2025-02-10
 slug: angular-compose
 tags:
   - JS/TS
@@ -784,11 +784,6 @@ Table(yourData, key = { it.id }) {
 }
 ```
 
-## Modeling
-
-[//]: # (Service)
-[//]: # (Component class vs ViewModel)
-
 ## State management
 
 The main challenge of writing UI is the mutation of state. Immutable data is much easier to work with in almost all regards, but if the state was immutable, we wouldn't need a client-side framework and could just return a baked page from the backend directly. Thus, a client-side framework must be able to manage mutation of state and re-rendering following that change, quickly, with few resources.
@@ -1124,11 +1119,66 @@ Here, Compose gives us a `MutableList<User>` that we can use exactly as any othe
 
 ### Delayed state
 
-#### Singular
+Delayed state cannot be accessed whenever we want. Instead of operating on the state itself, we describe the computations we want to perform, and the runtime will perform them later once the state is known.
 
-[//]: # (Mono vs suspend)
-[//]: # (Subject vs Flow; pipe vs function)
+TypeScript and Kotlin both have first-party support for asynchronous operations, through `async` in TS and `suspend` in Kotlin. These are different in a number of ways that won't be elaborated upon in this article, because `async` is rarely used in Angular applications. Instead, Angular developers work with RxJS.
 
-[//]: # (Change detection cycle)
+[RxJS](https://rxjs.dev/) is an asynchronous stream library, specialized in representing events through time and operations on them, for example merging two streams, filtering events, etc.
+```typescript
+http.get<Updates[]>('/api/updates')
+	.pipe(
+		concatAll(),
+		filter(update => update.id % 2 === 0),
+		map(update => update.data),
+	)
+	.subscribe(updateData => {
+		console.log('Received event', updateData);
+	});
+```
+RxJS was the only state management solution in Angular until the recent introduction of Signals. This lead RxJS to be used in many more situations than it was designed for, giving it a reputation of being clunky. RxJS also isn't particularly friendly to beginners, but so is the entire concept of stream-based design. The primary API element of RxJS is the `Observable`, which is used to describe complex operations on data we do not necessarily have access to yet.
 
-[//]: # (Angular has absolutely everything ready-to-go / the ecosystem)
+Kotlin represents delayed state through the first-party [KotlinX.Coroutines library](https://kotlinlang.org/docs/coroutines-overview.html), especially the `Flow` interface, which is very similar to RxJS' `Observable`.
+```kotlin
+client.get<List<Updates>>("/api/updates")
+	.body()
+	.asFlow()
+	.filter { it.id % 2 == 0 }
+	.map { it.data }
+	.collect {
+		println("Received event $it")
+	}
+```
+
+Writing a full comparison between RxJS and KotlinX.Coroutines is out of scope for this article—they are overall quite similar anyway. I would say the two main differences are the way errors are handled, and structured concurrency.
+
+Using RxJS, errors flow through the pipe the same way data does. Most operators can accept a second optional lambda to declare how the operator behaves in the presence of errors. If no such lambda is declared, errors are swallowed silently on subscription. Coroutines are designed such that exceptions behave transparently, as if they were regular functions. An exception will thus bubble up and be thrown during subscription, forcing the calling code to handle it.
+
+The flagship feature of Coroutines is structured concurrency: a coroutine is executed in the context of a `Job`, which describes its lifecycle. At any point, a user can `cancel` the `Job`, killing the coroutine and all its children. In UI interfaces, cancelling unneeded work is very important to avoid bugs when users change pages or perform actions while other actions are ongoing. RxJS also supports cascading cancellation, but that is specifically handled by the caller instead of being wired in when the operation is declared. While the difference seems minor, in practice, it is extremely common to find examples of using RxJS where no cancellation is done at all, including at conferences. This is much rare in the Compose world because cancelling requests when the context change is a built-in feature and extremely important to multiple markets, including Android.
+
+Lastly, Coroutines are based on the concept of a `suspend` function as a first-party citizen. Flows of a single element are widely discouraged, which greatly simplifies pipelines as merging two flows is rarely needed. RxJS doesn't have such a concept, forcing developers to understand complex flow merging strategies more intimately.
+
+## Honorable mention
+
+Angular and Compose are full frameworks, and I could have compared them through many other lenses. Before closing this article, here are a few of them:
+
+- Angular is based on TypeScript, and Compose is based on Kotlin. I have already written an article [comparing the two languages](ts-kjs-types.md).
+- Angular has an opinionated way of representing business logic in `Service` classes. Compose is a UI framework and doesn't concern itself with such aspects.
+- Angular has an opinionated way of handling dependency injection. Compose doesn't, leaving the user free to use whichever technique they want.
+- Angular splits components into a template and a TypeScript class. Compose only really requires the composable function, which takes the role of the template. However, for components which have complex logic (data loading, validation…) it is recommended to store data in an accompanying class, for example through [Compose ViewModel](https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-viewmodel.html).
+- Build tooling. Angular, especially through standalone components and built-in navigation, is particularly efficient at breaking a complex app into smaller bundles, which massively decrease initial load times (though they also increase navigation times). At the time of writing, Compose doesn't have such a feature, though a few precursor pieces have been built.
+
+## The ecosystem
+
+Throughout this article, I have mostly been showcasing situations in which Compose is better—at least in my opinion—than Angular. After all, Compose is more recent, and a much more streamlined library with a clear goal, instead of being an all-encompassing framework.
+
+Comparing Compose and Angular in such a way may be a bit unfair, however. Angular is somewhat analogous to the Java of the web ecosystem. Angular was there before, it will be there after. Angular is often late to new features, but it gets there, unlike many frameworks who effectively die after a few years.
+
+In a way, being late is Angular's model. By showing up after its competitors, Angular can implement only the good ideas, and slowly get better over time. This mechanism is very similar to modern Java, which always looks at Kotlin, Scala and other modern languages for inspiration, focusing on incremental improvements in the meantime.
+
+An enormous benefit of this strategy is the _ecosystem_. The amount of libraries available for Angular is absolutely massive, and anything you could ever want to do probably already has a binding. For long-running complex projects where speed of development doesn't matter as much as having everything available immediately, Angular is probably still a good choice, and will likely remain one in the foreseeable future.
+
+In the end, the most important difference is whether you like working with a massive sprawling framework that has an opinionated way of doing _everything_ built-in, or if you prefer to take the best parts of multiple technologies and compose them yourself together.
+
+This is the one aspect where I have less trust in Compose. Compose's complex history, being developed in part by the Android team, which heads a massively complex ecosystem with extremely hard barriers to entry, and JetBrains, which often mimics Android solutions because their main use-case is porting Android applications to other platforms rather than building new multiplatform experiences. I'm slightly worried Compose will grow more and more complex until it is nothing more than a port of Android, instead of being the promised platform-independent way of describing UI applications.
+
+As always with these kinds of articles, I'm very curious what the future holds, and I hope you found these comparison points useful.
