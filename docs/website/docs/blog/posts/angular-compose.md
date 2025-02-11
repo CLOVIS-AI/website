@@ -134,8 +134,8 @@ With Compose, a component is just a Kotlin function annotated with `@Composable`
 ```kotlin
 @Composable
 fun Counter(
-	val value: Int,
-	val onChange: () -> Int,
+	value: Int,
+	onChange: (Int) -> Int,
 ) = Row {
 
 	Button(onClick = { onChange(value - 1) }) {
