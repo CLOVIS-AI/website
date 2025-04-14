@@ -12,6 +12,7 @@ mkdocs:
 
   script:
     - pwd
+    - ./generate-news.sh
     - mkdocs build --site-dir ../../docs-website
 
   after_script:
