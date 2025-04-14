@@ -60,14 +60,14 @@ theme:
         name: "Dark theme (click to switch to system)"
 
 plugins:
-#  - social
+  # - social # https://github.com/squidfunk/mkdocs-material/issues/7818
+  - search
+  - privacy
   - blog:
       post_excerpt: required
       authors: false
   - tags:
-      tags_file: blog/tags.md
-  - search
-  - privacy
+      tag_file: blog/tags.md
   - rss:
       match_path: 'blog/posts/.*'
       date_from_meta:
@@ -78,9 +78,11 @@ plugins:
 markdown_extensions:
   - admonition
   - attr_list
-  - md_in_html
-  - pymdownx.details
   - def_list
+  - md_in_html
+  - footnotes
+  - tables
+  - pymdownx.details
   - pymdownx.superfences:
       custom_fences:
         - name: mermaid
@@ -93,6 +95,8 @@ markdown_extensions:
   - pymdownx.inlinehilite
   - pymdownx.tabbed:
       alternate_style: true
+  - toc:
+      permalink: true
   - pymdownx.caret
   - pymdownx.mark
   - pymdownx.tilde
