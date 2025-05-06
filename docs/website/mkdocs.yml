@@ -67,7 +67,7 @@ plugins:
       post_excerpt: required
       authors: false
   - tags:
-      tag_file: blog/tags.md
+      tags_file: blog/tags.md
   - rss:
       match_path: 'blog/posts/.*'
       date_from_meta:
