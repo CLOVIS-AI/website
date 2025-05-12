@@ -1,6 +1,6 @@
 ---
 date: 
-  created: 2025-05-05
+  created: 2025-05-12
 slug: sets
 tags:
   - Back to basics
@@ -226,12 +226,219 @@ If you want to learn more about `equals` and `hashCode` in Java and Kotlin, see 
 
 ## Linked hash-based sets
 
-[//]: # (TODO)
+While hash-based sets are performant, their downside of not keeping element order can make them unsuitable for some situations. The simplest workaround is to maintain the element order with another data structure that can be quickly inserted into. The class `LinkedHashSet` does exactly this, using a linked-list to store the elements order.
+
+In Kotlin, linked hashsets are the default set implementation used by many standard library functions, like `.toSet()` or `setOf()`, because most users expect collections to maintain insertion order and for the order to remain the same over time.
+
+The set operates essentially identically, except that insertion operations also add a link in the linked list. Searching for an element is unchanged, the linked list is not traversed. However, when we want to iterate over the set, then we iterate over the linked list instead of iterating over the buckets.
+
+Breaking a linked hashset happens the same way and has the same behavior as breaking a regular hashset: we can add the same instance multiple times to the set.
 
 ## Tree-based sets
 
-[//]: # (TODO)
+Tree-based sets are completely different to the two types of sets mentioned previously. There are many multiple possible implementations, but for the purpose of this article the simplest one will do.
+
+Tree-based sets are slower than hash-based sets, but have the advantage that elements are always sorted. All operations maintain the internal sort order, which is much cheaper to do that sort a list each time it is modified. If we want to continuously know the maximum of a collection, even as the collection changes, tree-based sets are a good solution.
+
+### A simple example
+
+The Kotlin standard library doesn't provide a `TreeSet` implementation—on the JVM, Kotlin can use Java's implementation. As an example, let's show a set that contains the elements `[1, 3, 5, 9, 12]`.
+
+```mermaid
+classDiagram
+    TreeSet --> NodeD
+    NodeD --> NodeC
+    NodeC --> NodeA
+    NodeC --> NodeB
+    NodeD --> NodeE
+
+    NodeA: 1
+    NodeB: 5
+    NodeC: 3
+    NodeD: 9
+    NodeE: 12
+```
+
+A TreeSet is organized into nodes that hold a single value, and have children organized into a specific way: all values left of them must be smaller. For example, the node C has the value `5`, and the only node on its left is the node A with the value `1`, that is indeed lesser.
+
+The node D has the value `9`. On its left are the nodes A, B and C, with respective values `1`, `3` and `5`, which are all lesser.
+
+To get a feel for how this set works, we'll insert the element `6`. We want to first discover whether the value is already present in the set, and then add it to the correct place.
+
+1. Start at the root, which has the value `9`. Compare `9` and our value, `6`.
+2. Because `6` is lesser than `9`, we know that, if it is present, it must be on the left of `9`. We therefore move one step down, to the node `3`.
+3. Compare `3` and our value, `6`.
+4. Because `6` is greater than `3`, we know that, if it is present, it must be on the right side of `3`. We therefore move one step down, to the node `5`.
+5. Compare `5` and our value, `6`.
+6. Because `6` is greater than `5`, we know that, if it is present, it must be on the right side of `5`. However, `5` doesn't have any children.
+7. We now know that the set currently doesn't contain the element `6`. We can add `6` as a child of the node `5`.
+
+```mermaid
+classDiagram
+    TreeSet --> NodeD
+    NodeD --> NodeC
+    NodeC --> NodeA
+    NodeC --> NodeB
+    NodeD --> NodeE
+    NodeB --> NodeF
+
+    NodeA: 1
+    NodeB: 5
+    NodeC: 3
+    NodeD: 9
+    NodeE: 12
+    NodeF: 6
+```
+
+Although this new set does validate all the rules we mentioned, in practice it is suboptimal because the depth varies a lot between branches. Keep the set _balanced_, meaning that its depth is similar in all branches, makes performance more predictable. In the real world, the set would probably reorganize itself, but we can ignore this for today.
+
+### Comparing arbitrary values
+
+Here, we stored integer values, which are trivially comparable. Notice that we always do a single comparison at a time, between two elements. When we store arbitrary objects, we must have a way to compare them two-by-two, which is provided by the standard `Comparable` interface:
+
+```java
+interface Comparable<T> {
+	int compareTo(T other);
+}
+```
+
+Depending on the language, this function has a different signature. In Rust, for example, it returns an enum which contains the members `Less`, `Equal` and `Greater`. `Comparable` was added to Java in 1.2, and enums were only added in 1.5—instead, `compareTo` works with a convention that the return value is `0` if the two objects are equivalent, a positive integer if `this` is greater than `other`, and a negative integer if `this` is lesser than `other`. Note that the actual values are irrelevant, `-1` and `-26789` are treated exactly the same: as negative integers.
+
+### It's broken
+
+Once again, however, data structures don't like interior mutability. Let's explore what happens.
+
+We will start with a `Car` implementation similar to our previous example, but adapted to implement `Comparable`:
+```kotlin
+class Car(
+	var year: Int
+) : Comparable<Car> {
+	
+	override fun compareTo(other: Car) = year.compareTo(other.year)
+	override fun hashCode() = year
+	override fun equals(o: Any?) = o is Car && o.year == year
+	override fun toString() = "Car($year)"
+}
+```
+
+First, we will create the set and add three cars. We keep a reference to the 2006 cars to easily mutate it later on:
+```kotlin
+val set = TreeSet<Car>()
+
+set += Car(2009)
+val car = Car(2006)
+set += car
+set += Car(2007)
+println(set)
+```
+```text
+[Car(2006), Car(2007), Car(2009)]
+```
+
+As expected, we obtain a set with three cars in increasing order of years. The set automatically sorted the elements even though we added the 2009 car first.
+
+As a control, let's consider a car from 2008. Currently, it isn't contained in the set:
+```kotlin
+val target = Car(2008)
+println("Does it have a $target car? ${target in set}")
+```
+```text
+Does it have a Car(2008) car? false
+```
+
+So far, the set behaves exactly as we expect. Now, let's mutate the 2006 car into being a 2008 car:
+```kotlin
+car.year = 2008
+println(set)
+```
+```text
+[Car(2008), Car(2007), Car(2009)]
+```
+
+Notice that there is now a 2008 car in the set. However, it is placed incorrectly: it should be between 2007 and 2009. Again, the set cannot detect interior mutability and reorder itself—now that it is in an inconsistent state, things start to behave weirdly. 
+When we ask whether the set contains a 2008 car, it answers no, even though it clearly does:
+
+```kotlin
+println("Does it have a $target car? ${target in set}")
+```
+```text
+Does it have a Car(2008) car? false
+```
+
+However, it isn't because the set doesn't think they are equal, which we can verify using `equals` and `compareTo` ourselves:
+```kotlin
+println("Are equal?            ${car.equals(target)}")
+println("Are comparable equal? ${car.compareTo(target)}")
+```
+```text
+Are equal?            true
+Are comparable equal? 0
+```
+Clearly, both `equals` and `compareTo` agree that both 2008 cars are identical.
+
+Presumably, the set is currently structured as:
+```mermaid
+classDiagram
+    TreeSet --> NodeB
+    NodeB --> NodeA
+    NodeB --> NodeC
+
+    NodeA: 2008
+    NodeB: 2007
+    NodeC: 2009
+```
+
+When searching for a 2008 car, the set starts with the root, 2007. Since 2008 is greater than 2007, a 2008 car must be on the right. There, it only finds 2009, so it decides that there is no 2008 car.
+
+Now that we've convinced the set of something impossible, let's take the confusion further, and add the 2008 car a second time.
+In theory, the set should do nothing. However, in practice:
+```kotlin
+set += car
+println(set)
+```
+```text
+[Car(2008), Car(2007), Car(2008), Car(2009)]
+```
+
+We have now added the same 2008 car instance to a set twice. 
+Presumably, the set now looks like:
+```mermaid
+classDiagram
+    TreeSet --> NodeB
+    NodeB --> NodeA
+    NodeB --> NodeC
+    NodeC --> NodeD
+
+    NodeA: 2008
+    NodeB: 2007
+    NodeC: 2009
+    NodeD: 2008
+```
+
+This is interesting, because there is now a 2008 car placed where a 2008 car should be. That one can be found by the set:
+```kotlin
+println("Does it have a $target car? ${target in set}")
+```
+```text
+Does it have a Car(2008) car? true
+```
+
+If you want to break this set further, you can use this sample:
+
+<iframe src="https://pl.kotl.in/VY_8wGoE7?theme=darcula" style="width: 100%; min-height: 800px" frameborder=0></iframe>
+
+As we can see, interior mutability breaks this kind of sets too, allowing the addition of the same instance multiple times in the set.
 
 ## Maps
 
-[//]: # (TODO)
+Although this article was primarily about sets, maps have the same behavior. We can think of maps as sets of keys that additionally carry a value. In fact, the Java, Kotlin and Rust standard libraries implement sets as special maps which _don't_ carry a value.
+
+In Java and Kotlin, we thus find `HashMap`, `LinkedHashMap` and `TreeMap`.
+
+Because the exact same algorithm and implementation is used under the hood, map keys can break in the exact same ways as showcased previously in this article.
+
+## Conclusion
+
+**Avoid interior mutability!** Mutability in general should be avoided because immutable data structures are easier to reason about. Mutating elements contained in collections (or other data structures not mentioned in this article) very often breaks their assumptions about the stored data.
+
+Usually, the conclusion of these articles is nuanced with specific examples where ignoring the rule is beneficial. For once, though, I can't think of an example where breaking a set or a map is a good idea, other than for learning about them, of course.
