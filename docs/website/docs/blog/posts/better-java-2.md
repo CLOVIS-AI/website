@@ -1,6 +1,7 @@
 ---
 date: 
   created: 2024-12-09
+  modified: 2025-05-05
 slug: better-java-2
 tags:
   - JVM
@@ -80,7 +81,7 @@ with all the same features: if the value is `null`, `false` is returned, and oth
 Recently, Java added records, which greatly simplify implementing `equals` and `hashCode` for simple data holders. In the future, Project Valhalla may introduce proper value classes that improve on this further. Kotlin has `data`, `sealed`, `object` and `value` classes that all help in this regard in similar ways. In other situations, developers usually use their IDE to generate the method anyway ([though you may be interested in watching this JEP Café](https://www.youtube.com/watch?v=kuzjX_efuDs)).
 
 **Note that this plays very badly with mutability.**
-In both languages, it is expected that `equals` and `hashCode` are stable: that is, they return the same result as long as the object hasn't changed. But more than that, the object is not allowed to change while observable by a data structure. For example, when an object is stored in an `HashSet`, if it is modified, and later a `contains` check is made, the set will answer that it doesn't contain the object: the set is comparing the object with the `hashCode` value from _when it was added to the set_.
+In both languages, it is expected that `equals` and `hashCode` are stable: that is, they return the same result as long as the object hasn't changed. But more than that, the object is not allowed to change while observable by a data structure. For example, when an object is stored in an `HashSet`, if it is modified, and later a `contains` check is made, the set will answer that it doesn't contain the object: the set is comparing the object with the `hashCode` value from [_when it was added to the set_](sets.md).
 Both languages therefore encourage immutability; we will see what Kotlin provides in [item 17](#item-17-minimize-mutability).
 
 Implementing `equals` and `hashCode` themselves is still tricky in both languages. I recommend reading Effective Java, which goes into details on multiple strategies, pitfalls, and facts I haven't seen mentioned anywhere else.
