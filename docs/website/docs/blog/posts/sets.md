@@ -45,15 +45,15 @@ classDiagram
     Bucket0: 12
     Bucket0: 9
     
-    Bucket1: 3
+    Bucket1: 4
     Bucket1: 1
     
     Bucket2: 5
 ```
 
-In this example, the set contains the elements `[1, 3, 5, 9, 12]`, spread over three buckets.
+In this example, the set contains the elements `[1, 4, 5, 9, 12]`, spread over three buckets.
 
-If we attempt to insert the element `3`, the set must first check whether `3` is already present. To do so, it needs to know which bucket to search in. The simplest algorithm to spread over an arbitrary number of values into a given number of buckets is to use the modulo operator:
+If we attempt to insert the element `4`, the set must first check whether `4` is already present. To do so, it needs to know which bucket to search in. The simplest algorithm to spread over an arbitrary number of values into a given number of buckets is to use the modulo operator:
 ```kotlin
 /**
  * Decides in which bucket the given [value] could be found.
@@ -68,7 +68,7 @@ fun chooseBucket(value: Int, bucketNumber): Int =
 In this example, we can see that:
 
 - `1 % 3 == 1`
-- `3 % 3 == 1`
+- `4 % 3 == 1`
 - `5 % 3 == 2`
 - `9 % 3 == 0`
 - `12 % 3 == 0`
@@ -238,7 +238,7 @@ Breaking a linked hashset happens the same way and has the same behavior as brea
 
 Tree-based sets are completely different to the two types of sets mentioned previously. There are many multiple possible implementations, but for the purpose of this article the simplest one will do.
 
-Tree-based sets are slower than hash-based sets, but have the advantage that elements are always sorted. All operations maintain the internal sort order, which is much cheaper to do that sort a list each time it is modified. If we want to continuously know the maximum of a collection, even as the collection changes, tree-based sets are a good solution.
+Tree-based sets are slower than hash-based sets, but have the advantage that elements are always sorted. All operations maintain the internal sort order, which is much cheaper to do than sort a list each time it is modified. If we want to continuously know the maximum of a collection, even as the collection changes, tree-based sets are a good solution.
 
 ### A simple example
 
