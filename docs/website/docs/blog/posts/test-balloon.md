@@ -783,7 +783,7 @@ Once again, DSL-based frameworks shine because they can hide the initialization 
 
 - Kotest has partial support that is disabled by default (enable with `TestConfig(coroutineTestScope = true)`).
 - Prepared supports these features and they are enabled by default. 
-- TestBalloon supports them but they are disabled by default (enable with `TestConfig.testScope`).
+- TestBalloon supports these features and they are enabled by default.
 
 ### Time and randomness
 
