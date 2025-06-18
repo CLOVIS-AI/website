@@ -886,7 +886,7 @@ For brevity, this list isn't exhaustive and not detailed.
 
 With the recent birth of TestBalloon, we can see that there is still a lot of innovating in the space of test frameworks. Even after JUnit's dominance in the JVM ecosystem, we can still make tests easier to write and maintain. Kotlin makes possible patterns that we couldn't dream of in the Java world.
 
-Nowadays, the main difficulty around creating test frameworks is the enormous amount of work needed to interoperate with the other tools, especially Gradle and IntelliJ. For the past year or so, the TestBalloon author and I have been discussing ways this could improve in the future, and we hope that what we have each been able to achieve will demonstrate that a better experience is possible in this space.
+Nowadays, the main difficulty around creating test frameworks is the large amount of work needed to interoperate with the other tools, especially Gradle, the Kotlin compiler and IntelliJ. For the past year or so, the TestBalloon author and I have been discussing ways this could improve in the future; we hope that what we have each been able to achieve will demonstrate that a better experience is possible in this space.
 
 Overall, test frameworks enormously affect the facility of writing tests and which schools of testing are made possible. We shouldn't underestimate how much simpler and expressive they can make tests, and in turn how easy it becomes to verify tricky conditions in our production systems.
 
