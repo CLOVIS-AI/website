@@ -871,16 +871,16 @@ Finally, test frameworks can provide helpers to production frameworks.
 Here, Kotest wins by far thanks to its longevity.
 For brevity, this list isn't exhaustive and not detailed.
 
-| Framework      | JUnit5 | Kotlin-Test | Kotest | Prepared | TestBalloon |
-|----------------|:------:|:-----------:|:------:|:--------:|:-----------:|
-| Spring         |   ✓    |             |   ✓    |          |             |
-| Ktor           |        |             |   ✓    |    ✓     |             |
-| TestContainers |        |             |   ✓    |          |             |
-| Kafka          |        |             |   ✓    |          |             |
-| MockServer     |        |             |   ✓    |          |             |
-| Koin           |        |             |   ✓    |          |             |
-| Arrow          |        |             |   ✓    |    ✓     |             |
-| Gradle         |        |             |        |    ✓     |             |
+| Framework      |   JUnit5    | Kotlin-Test | Kotest | Prepared | TestBalloon |
+|----------------|:-----------:|:-----------:|:------:|:--------:|:-----------:|
+| Spring         |      ✓      |             |   ✓    |          |             |
+| Ktor           |             |             |   ✓    |    ✓     |             |
+| TestContainers | Third-party |             |   ✓    |          |             |
+| Kafka          | Third-party |             |   ✓    |          |             |
+| MockServer     | Third-party |             |   ✓    |          |             |
+| Koin           |             |             |   ✓    |          |             |
+| Arrow          |             |             |   ✓    |    ✓     |             |
+| Gradle         |             |             |        |    ✓     |             |
 
 ## Conclusion
 
