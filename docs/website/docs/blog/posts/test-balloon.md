@@ -213,7 +213,7 @@ DSL-based frameworks use regular methods to describe nesting, often called Conte
 === "Prepared"
 
     ```kotlin
-    var UserTest by preparedSuite {
+    val UserTest by preparedSuite {
         test("Top-level test") {
             check("foo" == "foo")
         }
@@ -229,7 +229,7 @@ DSL-based frameworks use regular methods to describe nesting, often called Conte
 === "TestBalloon"
 
     ```kotlin
-    var UserTest by testSuite {
+    val UserTest by testSuite {
         test("Top-level test") {
             check("foo" == "foo")
         }
@@ -290,7 +290,7 @@ DSL-based frameworks use some kind of configuration declaration, which can usual
     ```kotlin
     val Slow = Tag("slow") // Preferably shared between all usages
 
-    var UserTest by preparedSuite {
+    val UserTest by preparedSuite {
         test("Fast test") {
             // …
         }
@@ -343,7 +343,7 @@ The DSL-based frameworks offer this feature similarly to tagging.
 === "Prepared"
 
     ```kotlin
-    var UserTest by preparedSuite {
+    val UserTest by preparedSuite {
         test("Active test") {
             // …
         }
@@ -357,7 +357,7 @@ The DSL-based frameworks offer this feature similarly to tagging.
 === "TestBalloon"
 
     ```kotlin
-    var UserTest by testSuite {
+    val UserTest by testSuite {
         test("Active test") {
             // …
         }
