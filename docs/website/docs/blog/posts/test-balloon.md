@@ -454,7 +454,7 @@ The same approach can be followed with TestBalloon. I'll leave writing it to the
 
 Prepared is built around the concept of fixtures: the way a test can get outside input. The equivalent of the Kotest and TestBalloon approach can be written essentially in the same way, but Prepared also has a dedicated feature, the eponymous prepared type:
 ```kotlin
-fun TestDsl.commonReferenceTests(reference: Prepared<String>) {
+fun TestDsl.commonReferenceTests(reference: Prepared<Reference<String>>) {
 	test("Clearing should make the value unavailable") {
 		// Given
 		checkNotNull(reference().getOrNull())
