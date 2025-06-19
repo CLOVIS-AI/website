@@ -1,6 +1,7 @@
 ---
 date: 
   created: 2025-06-17
+  modified: 2025-06-19
 slug: state-of-kotlin-tests
 tags:
   - Kotlin
@@ -891,3 +892,11 @@ Nowadays, the main difficulty around creating test frameworks is the large amoun
 Overall, test frameworks enormously affect the facility of writing tests and which schools of testing are made possible. We shouldn't underestimate how much simpler and expressive they can make tests, and in turn how easy it becomes to verify tricky conditions in our production systems.
 
 Each test framework has its own approach and its own priorities, providing support for the most basic cases, but adding extended features for its own idioms. By understanding what their goals are, we can profit from them—and maybe get inspired for new ways of tackling existing problems when it becomes time to create yet another framework.
+
+Did you discover a feature that could help your life? Give the projects a star!
+
+- [JUnit5](https://github.com/junit-team/junit5)
+- [Kotlin-test](https://github.com/JetBrains/kotlin)
+- [Kotest](https://github.com/kotest/kotest)
+- [Prepared](https://gitlab.com/opensavvy/groundwork/prepared)
+- [TestBalloon](https://github.com/infix-de/testBalloon/)
