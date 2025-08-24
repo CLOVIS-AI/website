@@ -133,6 +133,7 @@ nav:
           - experience/telegram.md
 
   - Public speaking:
+      - talks/ktconf-be.md
       - talks/kotlinconf.md
       - talks/bordeauxkt.md
       - talks/bdxio.md
