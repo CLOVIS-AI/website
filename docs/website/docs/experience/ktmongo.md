@@ -1,7 +1,7 @@
 # KtMongo
 
 !!! note ""
-    View the [repository](https://gitlab.com/opensavvy/ktmongo).
+    View the [repository](https://gitlab.com/opensavvy/ktmongo) or [documentation website](https://ktmongo.opensavvy.dev/).
 
 The [KMongo Kotlin driver for MongoDB](https://litote.org/kmongo/) was started in 2016 to add Kotlin-idiomatic DSLs on top of the official Java driver. The existence of KMongo is one of the greatest reasons of the popularity of MongoDB in the Kotlin ecosystem.
 
