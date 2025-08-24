@@ -1,9 +1,17 @@
 # BordeauxKt
 
 !!! note ""
-    BordeauxKt events are held in French.
+    BordeauxKt events are most of the time held in French.
 
 Since 2024, I organize [BordeauxKt](https://bordeauxkt.io/), the Kotlin user group in Bordeaux, south-west France.
+
+I typically speak at all events to introduce recent news (latest Kotlin versions, other related events) and the speakers. On this page, I only list events where I did more than introduce the topic.
+
+## KtMongo: the future of MongoDB in Kotlin
+
+I showcased my work on [KtMongo](https://ktmongo.opensavvy.dev) at Betclic, demonstrating how DSLs can make database queries more readable, and how Kotlin allows small teams to create large projects efficiently.
+
+The recording of this session is not available.
 
 ## Kotlin, beyond the JVM
 
