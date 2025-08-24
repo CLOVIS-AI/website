@@ -16,9 +16,12 @@ SIMAR aggregates data from many domain sources, including company-specific handl
 
 I joined the SIMAR project in 2024 as one of the five software engineers on the team.
 
+One of my main tasks was the integration of SIMAR with other systems on the harbour (EAI), in direct communication with the client.
+
 ## Technical stack
 
 - Kotlin microservices with gRPC
+- Java EAI monolith
 - TypeScript / Angular frontend
 - MongoDB
 - Kubernetes
