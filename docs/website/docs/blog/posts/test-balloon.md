@@ -7,9 +7,9 @@ tags:
   - Kotlin
 ---
 
-# Lifting Kotlin testing: From JUnit to TestBalloon
+# Lifting Kotlin testing: Comparing JUnit, Kotlin-test, Kotest, Prepared and TestBalloon
 
-There's a lot that goes into testing, but we rarely think of the most basic aspect: syntax. 
+Which Kotlin test framework should you use in 2025? Is there still room to innovate?
 
 <!-- more -->
 
