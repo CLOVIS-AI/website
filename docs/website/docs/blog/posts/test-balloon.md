@@ -1,7 +1,7 @@
 ---
 date: 
   created: 2025-06-17
-  modified: 2025-06-19
+  modified: 2025-08-24
 slug: state-of-kotlin-tests
 tags:
   - Kotlin
@@ -117,7 +117,7 @@ Prepared offers many more features, which will be discussed later.
 
 [TestBalloon](https://github.com/infix-de/testBalloon/) is the youngest child in the group, and the reason I'm writing this article now. It is still very early on (with its first release only happening a few weeks ago during KotlinConf 2025) but I believe in the project, in part because I've been following its prototype for almost a year now. Oliver, the TestBalloon's author, started working on it after being frustrated with the difficulty of adding Wasm WASI support to Kotest.
 
-Very similarly to Prepared, TestBalloon strives for simple concepts that combine elegantly, and a DSL-based approach. However, TestBalloon is able to run its own tests on most platforms thanks to its own compiler plugin. The typical test is declared as a top-level variable using the `testSuite` builder:
+Very similarly to Prepared, TestBalloon strives for simple concepts that combine elegantly, and a DSL-based approach. However, TestBalloon is able to run its own tests on all Kotlin platforms thanks to its own compiler plugin. The typical test is declared as a top-level variable using the `testSuite` builder:
 ```kotlin
 val FooTest by testSuite {
 	test("This is a test") {
