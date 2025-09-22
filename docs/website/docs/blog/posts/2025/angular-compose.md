@@ -1161,7 +1161,7 @@ Lastly, Coroutines are based on the concept of a `suspend` function as a first-p
 
 Angular and Compose are full frameworks, and I could have compared them through many other lenses. Before closing this article, here are a few of them:
 
-- Angular is based on TypeScript, and Compose is based on Kotlin. I have already written an article [comparing the two languages](ts-kjs-types.md).
+- Angular is based on TypeScript, and Compose is based on Kotlin. I have already written an article [comparing the two languages](../2024/ts-kjs-types.md).
 - Angular has an opinionated way of representing business logic in `Service` classes. Compose is a UI framework and doesn't concern itself with such aspects.
 - Angular has an opinionated way of handling dependency injection. Compose doesn't, leaving the user free to use whichever technique they want.
 - Angular splits components into a template and a TypeScript class. Compose only really requires the composable function, which takes the role of the template. However, for components which have complex logic (data loading, validation…) it is recommended to store data in an accompanying class, for example through [Compose ViewModel](https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-viewmodel.html).

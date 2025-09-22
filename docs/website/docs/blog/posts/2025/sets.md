@@ -222,7 +222,7 @@ In practice, this means a set can contain the same instance at most `x` times, w
 
 Note that this problem isn't specific to the JVM or to Kotlin in any way. All languages and libraries that offer hash-based sets with interior mutability can break in this way. Notably, Rust doesn't allow elements of a set to mutate, so this problem cannot happen.
 
-If you want to learn more about `equals` and `hashCode` in Java and Kotlin, see [this comparison article](better-java-2.md#items-1012-overriding-equals-hashcode-and-tostring).
+If you want to learn more about `equals` and `hashCode` in Java and Kotlin, see [this comparison article](../2024/better-java-2.md#items-1012-overriding-equals-hashcode-and-tostring).
 
 ## Linked hash-based sets
 

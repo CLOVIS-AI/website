@@ -73,7 +73,7 @@ If I'm going to choose a single company that will be the herald of everything op
 
 When I first started, [GitLab gave away its Ultimate tier for free to any public project with a permissive license](https://about.gitlab.com/blog/2022/02/04/ultimate-perks-for-open-source-projects/). They since stopped, and now require projects to [manually enroll and be non-profit](https://about.gitlab.com/solutions/open-source/), which is the standard for open source plans nowadays.
 
-GitLab is also not just for open source: it allows you to self-host the entire system, for free. This is a great option for companies or organizations that require private code, but can't afford paying a subscription to every contributor. This is how I first got introduced to GitLab: [the university I went to](../../experience/iut.md) had its own GitLab instance.
+GitLab is also not just for open source: it allows you to self-host the entire system, for free. This is a great option for companies or organizations that require private code, but can't afford paying a subscription to every contributor. This is how I first got introduced to GitLab: [the university I went to](../../../experience/iut.md) had its own GitLab instance.
 
 ## Project management
 
@@ -194,7 +194,7 @@ Of course, I don't write this each time I start a new project. It's all declared
 
 If you run out of CI minutes, GitLab lets you install the runner infrastructure on your own hardware. It's probably called `gitlab-runner` and available directly in your distribution of choice. It's a single line to configure, and after that your CI runs for free, unlimited, on whichever device·s you installed it on.
 
-[OpenSavvy](../../experience/opensavvy.md) uses its CI more effectively than many enterprise projects I have seen. We have a small server that starts picking up jobs whenever we're out of quota, and we never worry about it at all. 
+[OpenSavvy](../../../experience/opensavvy.md) uses its CI more effectively than many enterprise projects I have seen. We have a small server that starts picking up jobs whenever we're out of quota, and we never worry about it at all. 
 
 ## Merge trains
 
@@ -221,7 +221,7 @@ We have two feature branches that were developed entirely in parallel from each 
 
 Undetected conflicts are conflicts that happen because the meaning has changed, but the text hasn't (in which case it would be detected by Git and the merge would fail). For example, deleting or renaming a function in a branch, and calling it in another. 
 
-These types of conflicts are frequent in asynchronous contexts where a lot of branches are merged at once. During the development of [Formulaide](../../experience/arcachon.md#formulaide), we would get one such conflict a month.
+These types of conflicts are frequent in asynchronous contexts where a lot of branches are merged at once. During the development of [Formulaide](../../../experience/arcachon.md#formulaide), we would get one such conflict a month.
 
 A good way to solve these issues is the concept of [merge trains](https://docs.gitlab.com/ee/ci/pipelines/merge_trains.html): when merging a branch, instead of running the CI for the branch, we run it for the result of the merge commit. Only if the CI passes is the commit actually saved in the repository. If multiple MRs are marked for merging at the same time, they are added to a "train": all merge commits are created, each one runs a CI pipeline, and they are pushed to the repository as the pipelines pass. If any MR fails, it leaves the train, and all the subsequent ones restart themselves.
 
@@ -253,7 +253,7 @@ These were the main reasons I (and my projects) use GitLab. In this article, I w
 
 ### Phabricator & Arcanist
 
-The first is [Phabricator](https://www.phacility.com/phabricator/), which was used by the [WildFyre project](../../experience/wildfyre.md). Phabricator is an all-included development platform, with secrets management, contracts management, etc. Honestly, Phabricator is great, but there's one thing I really don't like: Arcanist. Arcanist is Phabricator's custom Git overlay CLI.
+The first is [Phabricator](https://www.phacility.com/phabricator/), which was used by the [WildFyre project](../../../experience/wildfyre.md). Phabricator is an all-included development platform, with secrets management, contracts management, etc. Honestly, Phabricator is great, but there's one thing I really don't like: Arcanist. Arcanist is Phabricator's custom Git overlay CLI.
 
 Arcanist wants to encourage "pre-commit review": reviewing code even before it is committed. Well, of course, that can't really happen, people still need to commit. But Arcanist doesn't let you push branches. Instead, it bundles everything from the branch into a diff, uploads that to Phabricator with some added metadata. If the diff is merged, Arcanist regenerates new commits from the previous metadata.
 

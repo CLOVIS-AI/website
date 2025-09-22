@@ -14,7 +14,7 @@ A story about contributing to open source, how the community finds bugs before t
 
 ## A bit of context
 
-This story starts in 2023: [Formulaide 1.0](../../experience/arcachon.md#formulaide) has long been deployed, and I'm working on the 2.0 version. One of the major differences is the migration from [Kotlin React](https://github.com/JetBrains/kotlin-wrappers/blob/master/kotlin-react/README.md) to [Compose HTML](https://github.com/JetBrains/compose-multiplatform?tab=readme-ov-file#compose-html)—but the one most relevant to this story is that many core components of Formulaide 1.0 have been extracted to standalone libraries. 
+This story starts in 2023: [Formulaide 1.0](../../../experience/arcachon.md#formulaide) has long been deployed, and I'm working on the 2.0 version. One of the major differences is the migration from [Kotlin React](https://github.com/JetBrains/kotlin-wrappers/blob/master/kotlin-react/README.md) to [Compose HTML](https://github.com/JetBrains/compose-multiplatform?tab=readme-ov-file#compose-html)—but the one most relevant to this story is that many core components of Formulaide 1.0 have been extracted to standalone libraries. 
 
 Among them, [Pedestal Cache](https://gitlab.com/opensavvy/groundwork/pedestal) is the flagship: a collection of pure Kotlin, multiplatform cache algorithms based on [KotlinX.Coroutines](https://github.com/Kotlin/kotlinx.coroutines). They are designed to be lightweight so they can be embedded at the core of applications: for example, I use them with very short expiration times (~1 minute) to make authentication virtually free.
 

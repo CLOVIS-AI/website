@@ -27,7 +27,7 @@ This guide is aimed at application developers who want to get a bit more out of 
 
 Gradle build scripts (`build.gradle.kts` files) should overall not contain logic. Especially in larger projects, any build logic should be enclosed in custom plugins which are then applied in build scripts. Build scripts should be purely declarative to ensure they are easy to configure for application developers.
 
-If you're working with any kind of large build, you're probably used to having multiple modules in the same repository that are very similar to each other. For example, if you're using some kind of [hexagonal architecture](hexagonal.md), you probably have a few modules that contain database logic. Let's take a look at such an example:
+If you're working with any kind of large build, you're probably used to having multiple modules in the same repository that are very similar to each other. For example, if you're using some kind of [hexagonal architecture](../2024/hexagonal.md), you probably have a few modules that contain database logic. Let's take a look at such an example:
 
 ```kotlin
 plugins {
