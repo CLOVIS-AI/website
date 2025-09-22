@@ -729,13 +729,13 @@ Additionally, Prepared's fixtures can be used anywhere, not just within suites. 
 
 Here is a short summary:
 
-| Feature                    | TestBalloon          | Prepared's prepared values | Prepared's shared values |
-|----------------------------|----------------------|----------------------------|--------------------------|
-| Initialized lazily         | ✓                    | ✓                          | ✓                        |
-| Can depend on each other   | ✓                    | ✓                          | ✓                        |
-| Are isolated between tests | No                   | ✓                          | No                       |
-| Can be declared anywhere   | No (only in a suite) | ✓                          | ✓                        |
-| Supports finalizers        | ✓                    | ✓                          | No (planned)             |
+| Feature                    | TestBalloon                   | Prepared's prepared values | Prepared's shared values |
+|----------------------------|-------------------------------|----------------------------|--------------------------|
+| Initialized lazily         | ✓                             | ✓                          | ✓                        |
+| Can depend on each other   | ✓                             | ✓                          | ✓                        |
+| Are isolated between tests | No                            | ✓                          | No                       |
+| Can be declared anywhere   | ✓ (using extension functions) | ✓                          | ✓                        |
+| Supports finalizers        | ✓                             | ✓                          | No (planned)             |
 
 ## Integrations
 
