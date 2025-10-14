@@ -212,7 +212,7 @@ All of this can be improved, however.
 
 ## What are context parameters?
 
-Context parameters are an upcoming feature of the Kotlin language, described in [KEEP-367](https://github.com/Kotlin/KEEP/blob/context-parameters/proposals/context-parameters.md). Before being known as context parameters, they were known as multi-extension functions, then context receivers. At the time of writing, it seems highly likely that context parameters will be the iteration that reaches stabilization.
+Context parameters are an upcoming feature of the Kotlin language, described in [KEEP-367](https://github.com/Kotlin/KEEP/blob/main/proposals/KEEP-0367-context-parameters.md). Before being known as context parameters, they were known as multi-extension functions, then context receivers. At the time of writing, it seems highly likely that context parameters will be the iteration that reaches stabilization.
 
 Context parameters are available behind `-Xcontext-parameters` since 2.2.0.
 
@@ -356,7 +356,7 @@ class Logger {
 context(_: Logger)
 fun foo() {
 	someServiceThatNeedsALogger()
-	info()  // ⚠ Doesn't compile
+	info("Hi!")  // ⚠ Doesn't compile
 }
 ```
 
@@ -373,7 +373,7 @@ fun info(message: String) = logger.info(message)
 context(_: Logger)
 fun foo() {
 	someServiceThatNeedsALogger()
-	info()  // Ok
+	info("Hi!")  // Ok
 }
 ```
 
