@@ -297,6 +297,8 @@ fun User.display() =
 
 Note how each of these signatures leads to slightly different interpretations and emphasize different things. Developers should choose one of the signatures, from the name of the function to the placement of the types, to make important things explicit and passthrough things implicit.
 
+If you're interested in another slightly different interpretation, take a look at [Alejandro's post](https://serranofp.com/blog/context-params.html#the-spotlight-principles) where he describes what he calls the "Spotlight principles".
+
 ### Context parameters are weaker than extension receivers
 
 As a tradeoff for their versatility, context parameters are much less powerful than extension functions. In particular, having a context parameter on a type does _not_ imply being able to implicitly call its members.
@@ -694,3 +696,7 @@ Here is a shortlist of the things I would want to see improved before context pa
 Still, it's good news that none of these are issues with the proposal itself and how it's written, rather they're all new things to be added on top to make it more convenient. To be fair, that's the entire point of releasing experimental versions of features: the community can try them out in the real world and see what works, what doesn't, and what can be improved.
 
 So, my verdict _right now_ is: context parameters are great, but at the moment they're not yet `#!kotlin fun` enough. I do have good hope that they can become so.
+
+<br/>
+
+Do you want to hear a second opinion? Alejandro Serrano Mena, the author of the context parameters KEEP, [wrote about how he thinks they should be used](https://serranofp.com/blog/context-params.html). 
