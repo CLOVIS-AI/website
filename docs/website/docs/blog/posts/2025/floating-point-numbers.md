@@ -28,7 +28,7 @@ Integer types are simple: each different bit pattern is a different value, and e
 - 0: `00000000 00000000 00000000 00000000`
 - 1: `00000000 00000000 00000000 00000001`
 - 2: `00000000 00000000 00000000 00000010`
-- 4: `00000000 00000000 00000000 00000011`
+- 3: `00000000 00000000 00000000 00000011`
 - and so on.
 
 Negative values are encoded in [two's-complement](https://en.wikipedia.org/wiki/Two%27s_complement), which is slightly more complex. In everyday life as Kotlin developers, this doesn't matter, as we don't tend to access bit patterns directly.
