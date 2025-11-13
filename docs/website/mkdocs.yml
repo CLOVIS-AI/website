@@ -62,7 +62,9 @@ theme:
 plugins:
   # - social # https://github.com/squidfunk/mkdocs-material/issues/7818
   - search
-  - privacy
+  - privacy:
+      assets_exclude:
+        - p.canet.dev/script.js
   - blog:
       post_excerpt: required
       authors: false
@@ -100,6 +102,10 @@ markdown_extensions:
   - pymdownx.caret
   - pymdownx.mark
   - pymdownx.tilde
+
+extra:
+  analytics:
+    provider: custom
 
 edit_uri: edit/main/docs/website/docs
 
