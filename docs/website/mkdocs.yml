@@ -64,7 +64,7 @@ plugins:
   - search
   - privacy:
       assets_exclude:
-        - p.canet.dev/script.js
+        - p.canet.dev/*
   - blog:
       post_excerpt: required
       authors: false
