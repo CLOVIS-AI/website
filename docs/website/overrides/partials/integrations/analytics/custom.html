@@ -1,6 +1,15 @@
 <!-- Privacy-friendly analytics by Plausible -->
-<script async src="https://p.canet.dev/script.js"></script>
 <script>
-	window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
-	plausible.init({endpoint: 'https://p.canet.dev/event'})
+  // Load Plausible dynamically so MkDocs Material's privacy plugin can't internalize it.
+  window.plausible = window.plausible || function(){ (plausible.q = plausible.q || []).push(arguments) };
+  plausible.init = plausible.init || function(i){ plausible.o = i || {} };
+  // Configure endpoint before the library loads
+  plausible.init({ endpoint: 'https://p.canet.dev/event' });
+  // Append the external script dynamically
+  (function() {
+    var s = document.createElement('script');
+    s.defer = true;
+    s.src = 'https://p.canet.dev/script.js';
+    (document.head || document.getElementsByTagName('head')[0]).appendChild(s);
+  })();
 </script>
