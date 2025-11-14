@@ -62,9 +62,7 @@ theme:
 plugins:
   # - social # https://github.com/squidfunk/mkdocs-material/issues/7818
   - search
-  - privacy:
-      assets_exclude:
-        - p.canet.dev/*
+  - privacy
   - blog:
       post_excerpt: required
       authors: false
