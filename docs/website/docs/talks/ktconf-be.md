@@ -1,10 +1,14 @@
-# KtConf.be
+# KTConf.be
 
 !!! note ""
 	Visit the [official website](https://ktconf.be/).
 
 KtConf is the largest Kotlin conference in Belgium.
 
-## KtConf 2025
+## KtMongo: the future of MongoDB in Kotlin
 
-I will be speaking at KtConf's first edition, in 2025. I will be showcasing how KtMongo simplifies interacting with a MongoDB database and how Kotlin DSLs allow us to write highly expressive code.
+I showcased my work on [KtMongo](https://ktmongo.opensavvy.dev) at the first edition of KTConf, in 2025. I explained the differences between different MongoDB drivers, explained how DSLs make Kotlin more readable, and a few tricks around library authorship.
+
+This session was not recorded.
+
+![Ivan Canet is speaking about MongoDB and Kotlin DSLs to the KTConf 2025 audience.](ktconf-be-2025-wide.jpg "Ivan Canet at KotlinConf 2025")
