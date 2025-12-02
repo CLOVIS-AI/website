@@ -56,7 +56,7 @@ When a value cannot be represented, it is rounded to the closest representable o
 
 The most well-known case is the sum of `0.1` and `0.2`, which does not exactly return `0.3`:
 
-<iframe src="https://pl.kotl.in/Agl8UHFkR?from=2&to=7&theme=darcula" style="width: 100%; min-height: 250px" frameborder=0 scrolling="no"></iframe>
+<iframe src="https://pl.kotl.in/Agl8UHFkR?from=2&to=7&theme=darcula" style="width: 100%; min-height: 250px" frameborder=0 scrolling="no" loading="lazy"></iframe>
 
 From this result we find an important rule: we should almost never compare floating-point numbers by equality. Instead, compare with ranges.
 
@@ -64,13 +64,13 @@ From this result we find an important rule: we should almost never compare float
 
 Because large numbers have low precision, combining them with values of low precision does not change their value:
 
-<iframe src="https://pl.kotl.in/4CdbZEM_h?from=2&to=11&theme=darcula" style="width: 100%; min-height: 320px" frameborder=0 scrolling="no"></iframe>
+<iframe src="https://pl.kotl.in/4CdbZEM_h?from=2&to=11&theme=darcula" style="width: 100%; min-height: 320px" frameborder=0 scrolling="no" loading="lazy"></iframe>
 
 As we can see, the addition of small values does nothing, as each sum rounds to the current value.
 
 However, if we do the exact same operation the other way around, the small values have a chance to compound and thus make a difference.
 
-<iframe src="https://pl.kotl.in/hE5xJpP9U?from=2&to=11&theme=darcula" style="width: 100%; min-height: 320px" frameborder=0 scrolling="no"></iframe>
+<iframe src="https://pl.kotl.in/hE5xJpP9U?from=2&to=11&theme=darcula" style="width: 100%; min-height: 320px" frameborder=0 scrolling="no" loading="lazy"></iframe>
 
 Although we've done the exact same mathematical operation, the result is different based on the order of terms. Over the lifetime of a complex program, this can lead to numbers being quite different from expected. Therefore, when you can, prefer computing small values together before combining them with larger values.
 
@@ -96,7 +96,7 @@ There are multiple bit patterns that represent ∞, but the standard library doe
 
 A typical operation that returns ∞ is the division of a positive number by zero:
 
-<iframe src="https://pl.kotl.in/OVdAeJM5M?from=2&theme=darcula" style="width: 100%; min-height: 170px" frameborder=0 scrolling="no"></iframe>
+<iframe src="https://pl.kotl.in/OVdAeJM5M?from=2&theme=darcula" style="width: 100%; min-height: 170px" frameborder=0 scrolling="no" loading="lazy"></iframe>
 
 Note that division by zero of **integers** throws an exception; division by zero of floating-point numbers returns ∞.
 
@@ -112,7 +112,7 @@ This brings us to our first strange Kotlin edge case: the language must ensure t
 
 Well, did you know Kotlin's comparison operators (`>`, `>=`, `<=`, `<`) don't actually map to the `compareTo` method, unlike what's written in the operator overloading documentation? Well, they _almost_ do. In fact, this is the only case I know where they don't. See for yourself:
 
-<iframe src="https://pl.kotl.in/tFB9hkAS3?from=2&to=5&theme=darcula" style="width: 100%; min-height: 200px" frameborder=0 scrolling="no"></iframe>
+<iframe src="https://pl.kotl.in/tFB9hkAS3?from=2&to=5&theme=darcula" style="width: 100%; min-height: 200px" frameborder=0 scrolling="no" loading="lazy"></iframe>
 
 The rule in Kotlin is that `compareTo` must return 0 if the two numbers are equal, a negative number if the first is lesser, and a positive number if the first is greater. Here, it returns −1, meaning that the first number is lesser. However, the `<` operator returns `false`.
 
@@ -147,11 +147,11 @@ The typical operation that returns `NaN` would be the square root of a negative 
 
 Since `NaN` is not a number, it is _unordered_ when compared to all other numbers:
 
-<iframe src="https://pl.kotl.in/oStv7Tg4p?from=2&to=6&theme=darcula" style="width: 100%; min-height: 250px" frameborder=0 scrolling="no"></iframe>
+<iframe src="https://pl.kotl.in/oStv7Tg4p?from=2&to=6&theme=darcula" style="width: 100%; min-height: 250px" frameborder=0 scrolling="no" loading="lazy"></iframe>
 
 As you can see, all operators always return `false`. This is the case even comparing `NaN` with itself:
 
-<iframe src="https://pl.kotl.in/tG6ifiBWY?from=2&to=6&theme=darcula" style="width: 100%; min-height: 250px" frameborder=0 scrolling="no"></iframe>
+<iframe src="https://pl.kotl.in/tG6ifiBWY?from=2&to=6&theme=darcula" style="width: 100%; min-height: 250px" frameborder=0 scrolling="no" loading="lazy"></iframe>
 
 But, how is this possible? We've learned that the comparison operators call the method `compareTo` to know the order. `compareTo` returns an integer, and the rules are based on its sign and zeroness. There are only three possible cases: the returned integer is strictly positive, strictly negative, or zero. Therefore, at least one of the comparison operators should return `true`.
 
@@ -159,7 +159,7 @@ Well, just like with −0, the Kotlin specification has a different behavior for
 
 So, how can we sort lists that contain a `NaN`? Well, just like with −0, the specification gives a different behavior to the comparison operators and to the `compareTo` method in this case.
 
-<iframe src="https://pl.kotl.in/mMtxSENhs?from=2&to=10&theme=darcula" style="width: 100%; min-height: 400px" frameborder=0 scrolling="no"></iframe>
+<iframe src="https://pl.kotl.in/mMtxSENhs?from=2&to=10&theme=darcula" style="width: 100%; min-height: 400px" frameborder=0 scrolling="no" loading="lazy"></iframe>
 
 When comparing `NaN` with any number, `compareTo` returns 1, meaning that the other number is greater. Therefore, `NaN` will always be sorted as the smallest possible value when sorting a list. But does it really count as the smallest _number_?
 
