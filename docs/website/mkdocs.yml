@@ -137,6 +137,7 @@ nav:
           - experience/telegram.md
 
   - Public speaking:
+      - talks/index.md
       - talks/ktconf-be.md
       - talks/kotlinconf.md
       - talks/bordeauxkt.md
