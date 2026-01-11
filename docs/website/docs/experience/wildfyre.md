@@ -19,9 +19,9 @@ This project was my first experience at community management, and I'm very grate
 
 ## A spiritual chain
 
-WildFyre was not the first iteration of this idea. Sola did it before it, and [Plag](https://web.archive.org/web/20150729041016/https://plag.com/#modal-1438143173998) did it even before.
+WildFyre was not the first iteration of this idea. Sola did it before, and before still, there was [Plag](https://web.archive.org/web/20150729041016/https://plag.com/#modal-1438143173998).
 
-In 2015, I was a Plag user during its golden age, and met many people who would become lifelong friends and mentors as I was just starting to gain an interest in programming.
+In 2015, during the app's golden age, I was a Plag user and met many people who would become lifelong friends and mentors as I was just starting to gain an interest in programming.
 
 Although my involvement in Plag (as a translator) and later in WildFyre were minimal compared to everything I've built since, they will always stick to me as my first experience with a real project, leading a real community.
 
