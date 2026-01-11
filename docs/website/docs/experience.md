@@ -2,13 +2,26 @@
 
 I'm a software engineer based in Bordeaux, France. I'm a native French speaker and fluent English speaker.
 
+I specialize in Kotlin, especially backend and web.
+
 ## Professional experience
 
-**[Since 2022 at 4SH](experience/4sh.md) •** Developing fullstack applications to interconnect and monitor shipping industry sysstems (by air, ship or truck) with French customs
+**[Since 2022 at 4SH](experience/4sh.md) • Fullstack applications for businesses, around logistics and compliance**
 
-**[2022 at CEA](experience/cea.md) •** Migrating a large-scale project from Python to Rust
+- Teaching Java and Kotlin • [Read more](experience/4sh-learning.md)
+- Generating SQL requests from a Kotlin DSL • [Read more](experience/vup.md)
+- Developing services for the French customs in La Réunion • [Read more](experience/simar.md)
+- Developing services for the French customs in Paris • [Read more](experience/cin.md)
 
-**[2021 to 2023 at the Arcachon town hall](experience/arcachon.md) •** Developing and maintaining a web-based form editor
+**[2022 at CEA](experience/cea.md) • Migrating a large-scale project from Python to Rust**
+
+- Migration from Python to Rust, while ensuring compatibility for existing Python users.
+- Profiler-guided optimization and performance assessments.
+
+**[2021 to 2023 at the Arcachon town hall](experience/arcachon.md) • Developing and maintaining a web-based form editor**
+
+- Solo project in direct contact with the client.
+- Developed in KotlinJS with React.
 
 ## Education
 
