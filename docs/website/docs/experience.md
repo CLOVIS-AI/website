@@ -31,12 +31,14 @@ I specialize in Kotlin, especially backend and web.
 
 **[2017 to 2019 at IUT de Bordeaux](experience/iut.md) •** Software developer student
 
-## Other organizations
+## Organizations
 
-In 2022, I co-created [OpenSavvy](experience/opensavvy.md) to host my various open source projects, especially Kotlin Multiplatform libraries, which I still maintain.
+**[La Grappe Numérique since 2025](https://lagrappenumerique.fr) •** La Grappe Numérique is a federation of all tech-oriented user groups in Bordeaux, France. I participated in its creation and its continued activities.
 
-I joined the [WildFyre](experience/wildfyre.md) project in 2018 and later its Board of Directors, until its sunsetting in 2023. 
+**[BordeauxKt since 2024](talks/bordeauxkt.md) •** I re-launched the Bordeaux Kotlin User Group, which previously stopped activities in 2019.
 
-Since 2016, I am also part of the French translation team of the [Telegram app](experience/telegram.md), the most popular communication app in France. I am also a moderator of the official French and Japanese channels.
+**[I co-created OpenSavvy in 2022](experience/opensavvy.md) •** OpenSavvy hosts most of my open source projects, especially around Kotlin Multiplatform and around system administration.
+
+**[WildFyre in 2018–2023](experience/wildfyre.md) •** The WildFyre project was an open source social network aiming to let users explicitly choose their content.
 
 In 2015, I was part of the French translation team for the now-defunct [Plag app](experience/wildfyre.md#a-spiritual-chain).
