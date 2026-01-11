@@ -3,7 +3,7 @@
 !!! note ""
     Visit the [official website](https://www.ocha.ac.jp/en/).
 
-Ochanomizu University is a women-only university in Tokyo, Japan.
+Ochanomizu University is a university in Tokyo, Japan.
 
 In 2019, I joined a computer science laboratory for three months as an intern during my studies at the [IUT de Bordeaux](iut.md) (men are allowed among researchers). This laboratory was working on natural language understanding, using grammar and vocabulary cues. Their flagship project, [`ccg2lambda`](https://github.com/mynlp/ccg2lambda), allows converting English or Japanese sentences into mathematical expressions, which can be fed into a solver to prove or disprove.
 
