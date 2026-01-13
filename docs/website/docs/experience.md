@@ -23,6 +23,22 @@ I specialize in Kotlin, especially backend and web.
 - Solo project in direct contact with the client.
 - Developed in KotlinJS with React.
 
+## Personal projects
+
+**[KtMongo](https://ktmongo.opensavvy.dev) •** A new DSL for writing MongoDB queries in Kotlin.
+
+**[Vite for Kotlin](https://vite-kotlin.opensavvy.dev/) •** A Gradle plugin to use Vite in Kotlin/JS and Kotlin/Wasm projects.
+
+**[Dokka for Material for MkDocs](https://dokka-mkdocs.opensavvy.dev/) •** A new Dokka format for embedding documentation in Material for MkDocs.
+
+**[Prepared](https://prepared.opensavvy.dev/) •** A modern test framework centered around independent test fixtures.
+
+**[Spine](https://spine.opensavvy.dev/) •** Fullstack shared Ktor endpoints.
+
+**[Pedestal](https://pedestal.opensavvy.dev/api-docs/) •** A collection of micro-libraries to help with Kotlin Multiplatform development: caching, progress management, weak references and more.
+
+Find more projects in the [OpenSavvy website](https://opensavvy.dev/libraries/index.html).
+
 ## Education
 
 **[2019–2022 at ENSEIRB-MATMECA](experience/enseirb.md) •** Software engineer student
