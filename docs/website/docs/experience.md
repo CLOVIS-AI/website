@@ -18,7 +18,7 @@ I specialize in Kotlin, especially backend and web.
 - Migration from Python to Rust, while ensuring compatibility for existing Python users.
 - Profiler-guided optimization and performance assessments.
 
-**[2021 to 2023 at the Arcachon town hall](experience/arcachon.md) • Developing and maintaining a web-based form editor**
+**[2021–2023 at the Arcachon town hall](experience/arcachon.md) • Developing and maintaining a web-based form editor**
 
 - Solo project in direct contact with the client.
 - Developed in KotlinJS with React.
@@ -45,7 +45,7 @@ Find more projects in the [OpenSavvy website](https://opensavvy.dev/libraries/in
 
 **[2019 at Ochanomizu University](experience/ochadai.md) •** Software developer intern
 
-**[2017 to 2019 at IUT de Bordeaux](experience/iut.md) •** Software developer student
+**[2017–2019 at IUT de Bordeaux](experience/iut.md) •** Software developer student
 
 ## Organizations
 
