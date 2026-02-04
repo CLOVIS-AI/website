@@ -8,11 +8,9 @@ include:
   - remote: https://gitlab.com/opensavvy/ci-templates/-/raw/main/version.gitlab-ci.yml
   - remote: https://gitlab.com/opensavvy/ci-templates/-/raw/main/mirror.gitlab-ci.yml
 
-  - local: docs/website/.gitlab-ci.yml
-
 variables:
   # https://gitlab.com/opensavvy/automation/containers
-  ci_containers: 0.7.1
+  ci_containers: 0.8.4
 
 workflow:
   rules:
@@ -44,24 +42,33 @@ mirror-playground:
       allow_failure: true
 
 # endregion
-# region GitLab Pages
+# region Kotlin pipeline
 
-pages:
-  image: alpine:latest
-  stage: deploy
-  needs:
-    - job: mkdocs
-      artifacts: true
-
+gitlab-ci.main.kts compile:
+  stage: .pre
+  image: registry.gitlab.com/opensavvy/automation/containers/kotlin:$ci_containers
+  needs: []
+  variables:
+    GIT_DEPTH: 1
   script:
-    - mv docs-website public
-
+    - ./.gitlab-ci.main.kts >kotlin-ci.yml
   artifacts:
     paths:
-      - public
+      - kotlin-ci.yml
+  interruptible: true
 
+gitlab-ci.main.kts run:
+  stage: .pre
+  needs: [ "gitlab-ci.main.kts compile", "os.version" ]
+  trigger:
+    include:
+      - artifact: kotlin-ci.yml
+        job: "gitlab-ci.main.kts compile"
+    strategy: depend
   rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_PIPELINE_SOURCE == 'schedule'
     - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
-  interruptible: false
+    - if: $CI_COMMIT_TAG
 
 # endregion
