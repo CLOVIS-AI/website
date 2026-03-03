@@ -1,4 +1,5 @@
 stages:
+  - kotlin  # compile & run the gitlab-ci.main.kts
   - docker  # create images that are needed by the rest of the build
   - build   # create any outputs of the project (binaries, containers, charts…)
   - test    # all quality checks
@@ -45,7 +46,7 @@ mirror-playground:
 # region Kotlin pipeline
 
 gitlab-ci.main.kts compile:
-  stage: .pre
+  stage: kotlin
   image: registry.gitlab.com/opensavvy/automation/containers/kotlin:$ci_containers
   needs: []
   variables:
@@ -58,7 +59,7 @@ gitlab-ci.main.kts compile:
   interruptible: true
 
 gitlab-ci.main.kts run:
-  stage: .pre
+  stage: kotlin
   needs: [ "gitlab-ci.main.kts compile", "os.version" ]
   trigger:
     include:
