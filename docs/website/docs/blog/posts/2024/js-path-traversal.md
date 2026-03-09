@@ -3,7 +3,7 @@ date:
   created: 2024-09-23
 slug: js-path-traversal
 tags:
-  - JS/TS
+  - JS & TS
   - InfoSec
 ---
 

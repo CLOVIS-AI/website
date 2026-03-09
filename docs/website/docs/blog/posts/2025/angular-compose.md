@@ -3,7 +3,7 @@ date:
   created: 2025-02-10
 slug: angular-compose
 tags:
-  - JS/TS
+  - JS & TS
   - Kotlin
 ---
 

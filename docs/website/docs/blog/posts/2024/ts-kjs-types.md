@@ -3,7 +3,7 @@ date:
   created: 2024-09-05
 slug: ts-kjs-types
 tags:
-  - JS/TS
+  - JS & TS
   - Kotlin
 ---
 
