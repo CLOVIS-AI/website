@@ -456,7 +456,7 @@ tasks.foo {
 
 :    If the user executes `./gradlew :foo`, `:other` will be executed, and then `:foo`.
 
-:    If the `:other` task reruns, `:foo` will also rerun.
+:    If the user executes `./gradlew :foo`, and `:other` is not up to date, then `:foo` will rerun as well.
 
 `mustRunAfter()`
 
@@ -464,7 +464,7 @@ tasks.foo {
 
 :   If the user executes `./gradlew :foo`, `:other` will not be executed, and `:foo` will be executed immediately. However, if the user executes `./gradlew :foo :other`, then `:other` will be executed first, followed by `:foo`.
 
-:   If the `:other` task reruns, `:foo` will not necessarily rerun.
+:   If the user executes `./gradlew :foo :other`, and `:other` is not up to date, `:foo` may still be up to date.
 
 `shouldRunAfter()`
 
@@ -472,7 +472,7 @@ tasks.foo {
 
 :   If the user executes `./gradlew :foo`, `:other` will not be executed, and `:foo` will be executed immediately. However, if the user executes `./gradlew :foo :other`, then `:other` will be executed first, followed by `:foo`.
 
-:   If the `:other` task reruns, `:foo` will not necessarily rerun.
+:   If the user executes `./gradlew :foo :other`, and `:other` is not up to date, `:foo` may still be up to date.
 
 :   This is useful to separate high-feedback and low-feedback tasks. For example, if you have unit tests (which run fast and catch the majority of mistakes) and integration tests (which are slow and more thorough), specifying `integrationTest.shouldRunAfter(test)` will ensure that unit tests run first when the machine is overloaded. If Gradle can run both concurrently, it will.
 
