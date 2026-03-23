@@ -2,7 +2,7 @@
 
 I'm a software engineer based in Bordeaux, France. I'm a native French speaker and fluent English speaker.
 
-I specialize in Kotlin, especially backend and web.
+I specialize in Kotlin (backend and web) and MongoDB.
 
 ## Professional experience
 
