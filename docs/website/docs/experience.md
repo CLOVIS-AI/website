@@ -4,6 +4,10 @@ I'm a software engineer based in Bordeaux, France. I'm a native French speaker a
 
 I specialize in Kotlin (backend and web) and MongoDB.
 
+## Recognition
+
+**[Golden Kodee Awards 2026](https://kotlinconf.com/awards/) • Nominee in the Online Presence category**
+
 ## Professional experience
 
 **[Since 2022 at 4SH](experience/4sh.md) • Fullstack applications for businesses, around logistics and compliance**
