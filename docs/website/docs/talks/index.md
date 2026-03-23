@@ -30,3 +30,4 @@ This page lists my appearances in major in-person events. Local user groups are 
 
 - **BDX I/O**: Attended.
 - [**4SH Workshop**](4sh-workshops.md#decouple): Gave a talk about [Decouple](../experience/4sh.md#perpetual-improvement).
+- **SSTIC**: Attended.
