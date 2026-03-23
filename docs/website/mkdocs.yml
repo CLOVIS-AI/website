@@ -143,6 +143,7 @@ nav:
 
   - Public speaking:
       - talks/index.md
+      - PAUG: talks/paug.md
       - talks/ktconf-be.md
       - talks/kotlinconf.md
       - talks/bordeauxkt.md
