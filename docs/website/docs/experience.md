@@ -53,9 +53,9 @@ Find more projects in the [OpenSavvy website](https://opensavvy.dev/libraries/in
 
 ## Organizations
 
-**[La Grappe Numérique since 2025](https://lagrappenumerique.fr) •** La Grappe Numérique is a federation of all tech-oriented user groups in Bordeaux, France. I participated in its creation and its continued activities.
+**[La Grappe Numérique since 2025](experience/lagrappenumerique.md) •** La Grappe Numérique is a federation of all tech-oriented user groups in Bordeaux, France. I participated in its creation and its continued activities.
 
-**[BordeauxKt since 2024](talks/bordeauxkt.md) •** I re-launched the Bordeaux Kotlin User Group, which previously stopped activities in 2019.
+**[BordeauxKt since 2024](experience/bordeauxkt.md) •** I re-launched the Bordeaux Kotlin User Group, which previously stopped activities in 2019.
 
 **[I co-created OpenSavvy in 2022](experience/opensavvy.md) •** OpenSavvy hosts most of my open source projects, especially around Kotlin Multiplatform and around system administration.
 

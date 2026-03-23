@@ -3,7 +3,7 @@
 !!! note ""
     BordeauxKt events are most of the time held in French.
 
-Since 2024, I organize [BordeauxKt](https://bordeauxkt.io/), the Kotlin user group in Bordeaux, south-west France.
+Since 2024, I organize [BordeauxKt](https://bordeauxkt.io/), the Kotlin user group in Bordeaux, south-west France. [Learn more](../experience/bordeauxkt.md).
 
 I typically speak at all events to introduce recent news (latest Kotlin versions, other related events) and the speakers. On this page, I only list events where I did more than introduce the topic.
 
