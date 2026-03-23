@@ -7,6 +7,6 @@ The Bordeaux Kotlin User Group was created in 2019, but its activities stopped i
 
 In the summer of 2024, I contacted the organizers with the intent to re-start the group. On October 19th, 2024, I organized the first new BordeauxKt meetup.
 
-As an organizer of the group, I am in contact with local companies to share news of new features with the local community, and with JetBrains to collect feedback for the Kotlin and IntelliJ teams.
+As an organizer of the group, I am in contact with local companies to share news of new features with the local community, and with JetBrains to collect feedback for the Kotlin and IntelliJ teams. I regularly give short talks on ecosystem news ([learn more](../talks/bordeauxkt.md)).
 
 Since 2025, [Mélanie Bélard](https://melaniebelard.com/) has joined as co-organizer of the group.
