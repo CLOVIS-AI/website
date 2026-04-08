@@ -4,7 +4,9 @@ This page lists my appearances in major in-person events. Local user groups are 
 
 ## 2026
 
+- **Google IO Connect**: Will attend.
 - **KotlinConf**: Will attend.
+- **AndroidMakers**: Attended.
 - [**PAUG**](paug.md#how-java--kotlin-play-together): Gave a talk on Java & Kotlin interoperability.
 - **FOSDEM**: Volunteered at the Kotlin booth. Wandered around as the Kotlin mascot, Kodee.
 
