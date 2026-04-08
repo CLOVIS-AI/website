@@ -6,7 +6,7 @@ I specialize in Kotlin (backend and web) and MongoDB.
 
 ## Recognition
 
-**[Golden Kodee Awards 2026](https://kotlinconf.com/awards/) • Nominee in the Online Presence category**
+**[Golden Kodee Awards 2026](https://kotlinconf.com/awards/) • Finalist in the Online Presence category**
 
 ## Professional experience
 
