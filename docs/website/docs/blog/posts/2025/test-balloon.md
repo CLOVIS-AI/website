@@ -29,6 +29,11 @@ Before we get to the main point of this article, let's take a quick overview of 
     Other libraries, such as assertion libraries, will only be briefly mentioned in this article.
     If you're searching for a (short) comparison of assertion libraries, [see here](https://opensavvy.gitlab.io/groundwork/prepared/docs/tutorials/index.html#assertion-libraries).
 
+!!! warning
+    This article was published in 2025. Some features listed as missing in this article may have been added since.
+
+    This article remains useful as an overall description of the different testing approaches, especially the possibilities created by DSLs instead of annotations.
+
 ##### JUnit5
 
 [JUnit5](https://junit.org/junit5/) is the standard for test frameworks on the JVM. Built for Java, it supports everything you may expect from a test framework, and more.
