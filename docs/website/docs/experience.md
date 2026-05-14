@@ -2,11 +2,15 @@
 
 I'm a software engineer based in Bordeaux, France. I'm a native French speaker and fluent English speaker.
 
-I specialize in Kotlin (backend and web) and MongoDB.
+I specialize in **:simple-kotlin: Kotlin** (backend and web) and **:simple-mongodb: MongoDB**.
+
+Get in touch: [:fontawesome-brands-linkedin: LinkedIn](https://www.linkedin.com/in/ivan-canet/) • [:fontawesome-brands-bluesky: Bluesky](https://bsky.app/profile/ivcanet.bsky.social) • [:fontawesome-brands-telegram: Telegram](https://t.me/clovis_ai) • [:fontawesome-brands-discord: Discord](https://discord.com/users/clovis_ai)
 
 ## Recognition
 
 **[Golden Kodee Awards 2026](https://kotlinconf.com/awards/) • Finalist in the Online Presence category**
+
+**[Speaker at KTConf and user groups](talks/index.md) • Active in France and Belgium**
 
 ## Professional experience
 
@@ -27,7 +31,7 @@ I specialize in Kotlin (backend and web) and MongoDB.
 - Solo project in direct contact with the client.
 - Developed in KotlinJS with React.
 
-## Personal projects
+## Open source
 
 **[KtMongo](https://ktmongo.opensavvy.dev) •** A new DSL for writing MongoDB queries in Kotlin.
 
