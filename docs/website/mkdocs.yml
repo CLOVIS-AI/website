@@ -148,9 +148,9 @@ nav:
 
   - Public speaking:
       - talks/index.md
+      - talks/kotlinconf.md
       - PAUG: talks/paug.md
       - talks/ktconf-be.md
-      - talks/kotlinconf.md
       - talks/bordeauxkt.md
       - talks/bdxio.md
       - talks/4sh-workshops.md

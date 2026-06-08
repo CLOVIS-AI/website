@@ -5,9 +5,17 @@
 
 KotlinConf is the official international Kotlin conference, organized by JetBrains.
 
+## KotlinConf 2026
+
+Just like the year prior, I did a lightning talk at the Kotlin Foundation's booth on [KtMongo](https://ktmongo.opensavvy.dev).
+
+This talk was not recorded.
+
+![](kotlinconf-2026.jpg "Ivan giving a talk on KtMongo at the Kotlin Foundation booth in 2026")
+
 ## KotlinConf 2025
 
-In 2025, I did a lightning talk at the Kotlin Foundation's booth on [KtMongo](https://ktmongo.opensavvy.dev), showcasing which Kotlin features can be used to enhance DSLs
+In 2025, I did a lightning talk at the Kotlin Foundation's booth on [KtMongo](https://ktmongo.opensavvy.dev), showcasing which Kotlin features can be used to enhance DSLs.
 
 This talk was not recorded.
 

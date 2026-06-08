@@ -4,7 +4,7 @@ This page lists my appearances in major in-person events. Local user groups are 
 
 ## 2026
 
-- **KotlinConf**: Will attend.
+- [**KotlinConf**](kotlinconf.md#kotlinconf-2026): Finalist for the Golden Kodee Awards. Gave a lightning talk on [KtMongo](https://ktmongo.opensavvy.dev) at the Kotlin Foundation booth.
 - **AndroidMakers**: Attended.
 - [**PAUG**](paug.md#how-java--kotlin-play-together): Gave a talk on Java & Kotlin interoperability.
 - **FOSDEM**: Volunteered at the Kotlin booth. Wandered around as the Kotlin mascot, Kodee.
