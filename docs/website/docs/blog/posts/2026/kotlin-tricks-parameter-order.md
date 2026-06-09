@@ -109,7 +109,7 @@ fun foo(
 )
 
 foo(a, "default", false)
-// I cannot specify 'c' without specifying 'b'
+// I cannot specify 'c' positionally without specifying 'b'
 ```
 
 Therefore: **optional parameters should be placed after mandatory parameters**.
@@ -131,7 +131,7 @@ display("123", 5, 7)
 
 On the call site, the vararg is not delimited. Because of this, a function can only have a single `vararg` parameter. 
 
-Additionally, positional parameters are forbidden after a `vararg` parameter:
+Additionally, positional arguments are forbidden after a `vararg` argument:
 ```kotlin
 fun mandatoryAfterVararg(
 	vararg items: Int,
