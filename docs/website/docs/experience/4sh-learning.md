@@ -17,6 +17,8 @@ Since 2023, 4SH has a Learning initiative, dedicated to creating courses based o
 - 2025 Sept. 8th–11th
 - 2025 Sept. 29th–Oct. 3rd
 - 2026 Feb. 3rd–6th
+- 2026 June 2nd–4th
+- 2026 July 27th–30th
 
 **Java Advanced (4 days):**
 
