@@ -11,6 +11,7 @@ Since 2023, 4SH has a Learning initiative, dedicated to creating courses based o
 **Kotlin Fundamentals (4 days):**
 
 - 2025 March 10th–13th
+- 2026 Sept. 21st–24th
 
 **Kotlin Advanced (4 days):**
 
